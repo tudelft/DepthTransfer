@@ -1,0 +1,468 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<robot name="track_multistory">
+    <link name="base">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </link>
+    <link name="gate_1">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_2">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_3">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_4">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_5">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_6">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <link name="gate_7">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 2.   0.15"/>
+            </geometry>
+            <origin xyz="0.0 0.0 -0.925" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.15 0.15 2.  "/>
+            </geometry>
+            <origin xyz="0.0 -0.925 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <joint name="base_gate_1" type="fixed">
+        <parent link="base"/>
+        <child link="gate_1"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="-0.5 -1.0 3.25" rpy="0.0 0.0 -0.3141592653589793"/>
+    </joint>
+    <joint name="base_gate_2" type="fixed">
+        <parent link="base"/>
+        <child link="gate_2"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="9.6 6.25 1.1" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <joint name="base_gate_3" type="fixed">
+        <parent link="base"/>
+        <child link="gate_3"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="9.5 -3.8 1.1" rpy="0.0 0.0 -2.3387411976724017"/>
+    </joint>
+    <joint name="base_gate_4" type="fixed">
+        <parent link="base"/>
+        <child link="gate_4"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="-4.5 -5.1 3.25" rpy="0.0 0.0 3.141592653589793"/>
+    </joint>
+    <joint name="base_gate_5" type="fixed">
+        <parent link="base"/>
+        <child link="gate_5"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="-4.5 -5.1 1.2" rpy="0.0 0.0 0.0"/>
+    </joint>
+    <joint name="base_gate_6" type="fixed">
+        <parent link="base"/>
+        <child link="gate_6"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="4.9 -0.5 1.1" rpy="0.0 0.0 1.3788101090755203"/>
+    </joint>
+    <joint name="base_gate_7" type="fixed">
+        <parent link="base"/>
+        <child link="gate_7"/>
+        <axis xyz="1. 0. 0."/>
+        <origin xyz="-2.0 6.6 1.1" rpy="0.0 0.0 -2.652900463031381"/>
+    </joint>
+    <material name="color[1.0, 0.5, 0.3, 1.0]">
+        <color rgba="1.  0.5 0.3 1. "/>
+    </material>
+</robot>

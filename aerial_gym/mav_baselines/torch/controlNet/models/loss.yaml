@@ -1,0 +1,6 @@
+model:
+  target: aerial_gym.mav_baselines.torch.controlNet.ldm.modules.losses.VAEWithDiscriminator
+  params:
+    disc_start: 30001
+    kl_weight: 0.001
+    disc_weight: 1.0

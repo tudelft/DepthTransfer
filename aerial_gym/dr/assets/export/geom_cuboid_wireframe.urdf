@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<robot name="geom_cuboid_wireframe">
+    <link name="base">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+            <mass value="1.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.0 0.9104796648025513 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.0 0.9104796648025513 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.0 -0.9104796648025513 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.0 -0.9104796648025513 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.4019410312175751 0.0 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.4019410312175751 0.0 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="-0.4019410312175751 0.0 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="-0.4019410312175751 0.0 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.4019410312175751 0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="0.4019410312175751 -0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="-0.4019410312175751 0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <visual>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+            <origin xyz="-0.4019410312175751 -0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <origin xyz="0.0 0.9104796648025513 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <origin xyz="0.0 0.9104796648025513 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <origin xyz="0.0 -0.9104796648025513 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="1.17 0.37 0.37"/>
+            </geometry>
+            <origin xyz="0.0 -0.9104796648025513 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <origin xyz="0.4019410312175751 0.0 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <origin xyz="0.4019410312175751 0.0 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <origin xyz="-0.4019410312175751 0.0 0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 2.19 0.37"/>
+            </geometry>
+            <origin xyz="-0.4019410312175751 0.0 -0.9400861263275146" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <origin xyz="0.4019410312175751 0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <origin xyz="0.4019410312175751 -0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <origin xyz="-0.4019410312175751 0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <collision>
+            <geometry>
+                <box size="0.37 0.37 2.25"/>
+            </geometry>
+            <origin xyz="-0.4019410312175751 -0.9104796648025513 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <material name="color[1.0, 1.0, 1.0, 1.0]">
+        <color rgba="1. 1. 1. 1."/>
+    </material>
+</robot>

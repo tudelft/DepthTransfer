@@ -1,0 +1,13 @@
+material forests{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture /home/yhserver/aerial_gym_ws/aerial_gym_dev/resources/models/environment_assets/walls/forests.jpg
+                scale 1 1
+            }
+        }   
+    }
+}

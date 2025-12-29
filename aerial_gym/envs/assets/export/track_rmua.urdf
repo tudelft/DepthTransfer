@@ -1,0 +1,3620 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<robot name="track_rmua">
+  <link name="base">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+  </link>
+  <link name="obstacle_0">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.6 1.8 2.1"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 1.8 2.1"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_1">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.6 1.2 2.1"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 1.2 2.1"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_2">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size=" 1.   1.5 15. "/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size=" 1.   1.5 15. "/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_3">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_4">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_5">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_6">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_7">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_8">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_9">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_10">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_11">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.65 0.05 0.05"/>
+      </geometry>
+      <origin xyz="0.0 -0.3 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.65 0.05"/>
+      </geometry>
+      <origin xyz="-0.3 0.0 -0.3" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.65"/>
+      </geometry>
+      <origin xyz="-0.3 -0.3 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_12">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.6 0.6 2. "/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.6 2. "/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_13">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_14">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_15">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_16">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_17">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="2.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_18">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_19">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_20">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_21">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_22">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_23">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_24">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_25">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_26">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_27">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_28">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_29">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_30">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_31">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="obstacle_32">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1" length="1.0"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_0">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.3538655638694763"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.825276255607605 -1.48781418800354 -1.1735455989837646" rpy="-2.1133150180154523 -1.2724712769216815 1.1249288002676288"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.28810954093933105"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.40420448780059814 0.9103856086730957 -0.3559509515762329" rpy="-1.3444574514972134 0.7006757259368896 1.556188702583313"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.12905067205429077"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.6798092126846313 -1.0877599716186523 -0.8008022904396057" rpy="2.8766368309683124 1.060075434046336 -1.1137460788064681"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1704077422618866" length="0.7499022483825684"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.7258859872817993 0.03518509864807129 -1.0246222019195557" rpy="0.47627595067024225 1.4116350412368772 0.3920328319072724"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.17516642808914185" length="0.5006928443908691"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.9326843023300171 -0.9851607084274292 -0.4992837905883789" rpy="-2.650338236485617 0.37723833322525024 1.787965178489685"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.22519199550151825" length="0.7150992155075073"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.6776297092437744 -1.029592752456665 -0.875102698802948" rpy="2.0662336349487305 0.6619936227798462 -0.5074618498431607"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.3538655638694763"/>
+      </geometry>
+      <origin xyz="-0.825276255607605 -1.48781418800354 -1.1735455989837646" rpy="-2.1133150180154523 -1.2724712769216815 1.1249288002676288"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.28810954093933105"/>
+      </geometry>
+      <origin xyz="-0.40420448780059814 0.9103856086730957 -0.3559509515762329" rpy="-1.3444574514972134 0.7006757259368896 1.556188702583313"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.12905067205429077"/>
+      </geometry>
+      <origin xyz="0.6798092126846313 -1.0877599716186523 -0.8008022904396057" rpy="2.8766368309683124 1.060075434046336 -1.1137460788064681"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1704077422618866" length="0.7499022483825684"/>
+      </geometry>
+      <origin xyz="-0.7258859872817993 0.03518509864807129 -1.0246222019195557" rpy="0.47627595067024225 1.4116350412368772 0.3920328319072724"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.17516642808914185" length="0.5006928443908691"/>
+      </geometry>
+      <origin xyz="-0.9326843023300171 -0.9851607084274292 -0.4992837905883789" rpy="-2.650338236485617 0.37723833322525024 1.787965178489685"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.22519199550151825" length="0.7150992155075073"/>
+      </geometry>
+      <origin xyz="-0.6776297092437744 -1.029592752456665 -0.875102698802948" rpy="2.0662336349487305 0.6619936227798462 -0.5074618498431607"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_1">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.45 0.6  0.29"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.4443981647491455 1.4497103691101074 -0.5749890804290771" rpy="0.53384929895401 0.018344853073358536 -2.2427495161639617"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.1508847326040268"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.5320981740951538 1.6546533107757568 0.3133045434951782" rpy="-1.5197394529925747 -0.6053522268878384 -0.2797296682940884"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.18241922557353973" length="0.72723788022995"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.5622293949127197 3.8217172622680664 -1.1009256839752197" rpy="1.6790283600515643 -1.1040800491995133 1.020879117650441"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.18084044754505157" length="0.37346526980400085"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.8393324613571167 2.8395769596099854 -0.22503089904785156" rpy="1.7023528814315796 -0.4431322256671353 -2.4411783854113978"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.13231995701789856"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.5333436727523804 0.8588502407073975 -0.5136643052101135" rpy="-2.3470048030191144 -1.1203940788931168 2.4317191521353045"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.26337260007858276" length="0.4558364748954773"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.7432942390441895 3.04388427734375 0.7882697582244873" rpy="1.174727288884572 0.5520450194650374 -0.831897648172923"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.28502920269966125"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.7937166690826416 1.8020052909851074 -0.3358452320098877" rpy="0.04584321181242844 0.1875788291269026 0.7552743832296648"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.2922130227088928"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.8130691051483154 1.9005248546600342 -0.9043586254119873" rpy="1.219550371170044 0.32745808362960815 2.117551565170288"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.4  0.34 0.68"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.2551484107971191 1.6843667030334473 1.4510242938995361" rpy="0.45445498625700853 0.8135804255777083 1.2997249046987809"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.25 0.3  0.69"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.4184091091156006 0.010391473770141602 1.003906011581421" rpy="2.3801797310537616 -1.1449478546804703 -2.1905514915757855"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.45 0.6  0.29"/>
+      </geometry>
+      <origin xyz="1.4443981647491455 1.4497103691101074 -0.5749890804290771" rpy="0.53384929895401 0.018344853073358536 -2.2427495161639617"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.1508847326040268"/>
+      </geometry>
+      <origin xyz="-1.5320981740951538 1.6546533107757568 0.3133045434951782" rpy="-1.5197394529925747 -0.6053522268878384 -0.2797296682940884"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.18241922557353973" length="0.72723788022995"/>
+      </geometry>
+      <origin xyz="-1.5622293949127197 3.8217172622680664 -1.1009256839752197" rpy="1.6790283600515643 -1.1040800491995133 1.020879117650441"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.18084044754505157" length="0.37346526980400085"/>
+      </geometry>
+      <origin xyz="-1.8393324613571167 2.8395769596099854 -0.22503089904785156" rpy="1.7023528814315796 -0.4431322256671353 -2.4411783854113978"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.13231995701789856"/>
+      </geometry>
+      <origin xyz="-0.5333436727523804 0.8588502407073975 -0.5136643052101135" rpy="-2.3470048030191144 -1.1203940788931168 2.4317191521353045"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.26337260007858276" length="0.4558364748954773"/>
+      </geometry>
+      <origin xyz="-0.7432942390441895 3.04388427734375 0.7882697582244873" rpy="1.174727288884572 0.5520450194650374 -0.831897648172923"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.28502920269966125"/>
+      </geometry>
+      <origin xyz="1.7937166690826416 1.8020052909851074 -0.3358452320098877" rpy="0.04584321181242844 0.1875788291269026 0.7552743832296648"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.2922130227088928"/>
+      </geometry>
+      <origin xyz="0.8130691051483154 1.9005248546600342 -0.9043586254119873" rpy="1.219550371170044 0.32745808362960815 2.117551565170288"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.4  0.34 0.68"/>
+      </geometry>
+      <origin xyz="-1.2551484107971191 1.6843667030334473 1.4510242938995361" rpy="0.45445498625700853 0.8135804255777083 1.2997249046987809"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.25 0.3  0.69"/>
+      </geometry>
+      <origin xyz="-0.4184091091156006 0.010391473770141602 1.003906011581421" rpy="2.3801797310537616 -1.1449478546804703 -2.1905514915757855"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_2">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <sphere radius="0.12904071807861328"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.8415044546127319 1.5238698720932007 0.2530921697616577" rpy="3.110828161239624 0.7523925304412842 0.4499634802341461"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.22608394920825958" length="0.3348988890647888"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.575505256652832 0.8177764415740967 -0.7038348913192749" rpy="-2.052765878038951 -1.042100278539113 -0.9336699565225326"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.215861514210701" length="0.4643040895462036"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.48474740982055664 0.6940584182739258 -0.9519956111907959" rpy="-1.3838999907123013 0.9544016122817994 -1.5625723044024868"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.1353134661912918"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.4727516174316406 1.3710691928863525 0.9391146898269653" rpy="-0.44306460221345045 0.024295242624827417 -0.7232905944162092"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.12529319524765015"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.7482250928878784 1.9457063674926758 -0.2358795404434204" rpy="-2.581264229612895 -0.7063251415914812 1.735501615209035"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.12904071807861328"/>
+      </geometry>
+      <origin xyz="0.8415044546127319 1.5238698720932007 0.2530921697616577" rpy="3.110828161239624 0.7523925304412842 0.4499634802341461"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.22608394920825958" length="0.3348988890647888"/>
+      </geometry>
+      <origin xyz="-0.575505256652832 0.8177764415740967 -0.7038348913192749" rpy="-2.052765878038951 -1.042100278539113 -0.9336699565225326"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.215861514210701" length="0.4643040895462036"/>
+      </geometry>
+      <origin xyz="-0.48474740982055664 0.6940584182739258 -0.9519956111907959" rpy="-1.3838999907123013 0.9544016122817994 -1.5625723044024868"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.1353134661912918"/>
+      </geometry>
+      <origin xyz="-0.4727516174316406 1.3710691928863525 0.9391146898269653" rpy="-0.44306460221345045 0.024295242624827417 -0.7232905944162092"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.12529319524765015"/>
+      </geometry>
+      <origin xyz="0.7482250928878784 1.9457063674926758 -0.2358795404434204" rpy="-2.581264229612895 -0.7063251415914812 1.735501615209035"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_3">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.2397044599056244" length="0.49875304102897644"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.6624847054481506 -0.40876758098602295 -0.3174588680267334" rpy="0.15612448751926422 -0.5638921896563931 -0.5078972021686001"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.4  0.56 0.45"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.309783935546875 0.37165844440460205 -0.5490461587905884" rpy="-2.0196575244241437 0.24511710007722 -1.0461854060464582"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.59 0.97 0.76"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.6444390416145325 -0.813827395439148 0.8385071754455566" rpy="-1.2572249491983138 -0.8324576298422136 -1.0900255759530746"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.64 0.24 0.46"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.534203290939331 0.9492428302764893 0.2630833387374878" rpy="-1.035391155873434 -0.04433566728700835 2.6602096557617188"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.21935807168483734"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.6899852752685547 -0.6327890157699585 -0.8018850088119507" rpy="0.9947423934936523 0.04122498631477356 0.717417299747467"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.2397044599056244" length="0.49875304102897644"/>
+      </geometry>
+      <origin xyz="-0.6624847054481506 -0.40876758098602295 -0.3174588680267334" rpy="0.15612448751926422 -0.5638921896563931 -0.5078972021686001"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.4  0.56 0.45"/>
+      </geometry>
+      <origin xyz="-1.309783935546875 0.37165844440460205 -0.5490461587905884" rpy="-2.0196575244241437 0.24511710007722 -1.0461854060464582"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.59 0.97 0.76"/>
+      </geometry>
+      <origin xyz="-0.6444390416145325 -0.813827395439148 0.8385071754455566" rpy="-1.2572249491983138 -0.8324576298422136 -1.0900255759530746"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.64 0.24 0.46"/>
+      </geometry>
+      <origin xyz="0.534203290939331 0.9492428302764893 0.2630833387374878" rpy="-1.035391155873434 -0.04433566728700835 2.6602096557617188"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.21935807168483734"/>
+      </geometry>
+      <origin xyz="0.6899852752685547 -0.6327890157699585 -0.8018850088119507" rpy="0.9947423934936523 0.04122498631477356 0.717417299747467"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_4">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.47 0.48 0.44"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.297325849533081 4.243688106536865 -1.1157619953155518" rpy="-0.3868161757760725 -1.5070413033193863 -1.4539668877893173"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.56 0.57 0.64"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.552809000015259 0.9791073799133301 -0.8031924962997437" rpy="3.034268705052785 1.517435344057627 -2.109667332964488"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.3691674768924713"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.5947184562683105 0.5212476253509521 0.1330329179763794" rpy="1.903029290837697 0.290362985926219 -1.8512751181894027"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.5  0.73 0.64"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.12791657447814941 4.107832908630371 0.33204424381256104" rpy="-2.520343367253439 0.7590482234954834 0.20769935846328735"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.27 0.67 0.32"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.371732234954834 1.157041072845459 -0.7236351370811462" rpy="-2.572655264531271 -1.4308741728412078 -0.539193932210104"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.22276651859283447"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.4233899116516113 3.0351059436798096 1.364713430404663" rpy="-2.676798703270503 1.1999601443582257 1.8323429505056659"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.19228601455688477"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.4046521186828613 3.8011250495910645 -0.8429455161094666" rpy="-2.550186487036296 -0.3397966305441179 0.9307874123281755"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.28894418478012085" length="0.4272223114967346"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.12920522689819336 2.384748697280884 -1.358384609222412" rpy="-2.9539058228307447 1.5017285664849958 -1.5969387610727035"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.168286994099617"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.9974911212921143 4.78225564956665 -0.7261691093444824" rpy="-1.2832362969690048 -1.1546624581045426 -2.0931650718026837"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.56 0.62 0.47"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.6986274719238281 5.010406970977783 0.24333500862121582" rpy="2.594599723815918 0.23162025213241577 1.9973030090332031"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.53 0.42 0.68"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.595726490020752 1.0090007781982422 0.9480268955230713" rpy="-1.2187960465722762 -0.04808339278166672 -0.620828541117259"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.15455658733844757" length="0.4806741774082184"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.2354001998901367 5.403701305389404 -0.7307864427566528" rpy="0.8497722148895264 -0.6210864225970669 -0.6797969977008267"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.35 0.49 0.56"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.5531015396118164 3.665086507797241 0.3179715871810913" rpy="2.286562204360962 -0.2432292143451138 -2.6924141089068816"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.3568572402000427"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.024864912033081 3.936974048614502 -0.7663224935531616" rpy="0.5311165452003479 1.4256314039230347 -0.11181098619569976"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.27623242139816284"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.38330507278442383 1.6244302988052368 0.7494847774505615" rpy="1.5136735439300537 1.0214390754699707 2.1383752822875977"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.74 0.57 0.59"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.3862926959991455 1.5264170169830322 -0.9765921235084534" rpy="1.6375611702627457 0.5277391989999495 2.8707402626699725"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1971605271100998" length="0.43945878744125366"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.044847965240478516 2.818168878555298 0.02061617374420166" rpy="-1.9684441725360318 -0.2206314245807095 2.327420473098755"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.2269594818353653" length="0.520561933517456"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.137601852416992 4.954943656921387 0.6886882781982422" rpy="0.8295956254005432 1.455484867095947 2.4513490200042725"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.24579788744449615" length="0.47092530131340027"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.184634208679199 1.4181382656097412 -1.247073769569397" rpy="-0.40426093736757474 0.16669346392154694 -0.771679226552145"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.26824891567230225" length="0.568382740020752"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.7959790229797363 4.80753755569458 -1.30231511592865" rpy="1.208834497136525 -0.5930667797750748 0.6754792610830583"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.47 0.48 0.44"/>
+      </geometry>
+      <origin xyz="-2.297325849533081 4.243688106536865 -1.1157619953155518" rpy="-0.3868161757760725 -1.5070413033193863 -1.4539668877893173"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.56 0.57 0.64"/>
+      </geometry>
+      <origin xyz="-2.552809000015259 0.9791073799133301 -0.8031924962997437" rpy="3.034268705052785 1.517435344057627 -2.109667332964488"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.3691674768924713"/>
+      </geometry>
+      <origin xyz="1.5947184562683105 0.5212476253509521 0.1330329179763794" rpy="1.903029290837697 0.290362985926219 -1.8512751181894027"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.5  0.73 0.64"/>
+      </geometry>
+      <origin xyz="0.12791657447814941 4.107832908630371 0.33204424381256104" rpy="-2.520343367253439 0.7590482234954834 0.20769935846328735"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.27 0.67 0.32"/>
+      </geometry>
+      <origin xyz="-0.371732234954834 1.157041072845459 -0.7236351370811462" rpy="-2.572655264531271 -1.4308741728412078 -0.539193932210104"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.22276651859283447"/>
+      </geometry>
+      <origin xyz="2.4233899116516113 3.0351059436798096 1.364713430404663" rpy="-2.676798703270503 1.1999601443582257 1.8323429505056659"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.19228601455688477"/>
+      </geometry>
+      <origin xyz="1.4046521186828613 3.8011250495910645 -0.8429455161094666" rpy="-2.550186487036296 -0.3397966305441179 0.9307874123281755"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.28894418478012085" length="0.4272223114967346"/>
+      </geometry>
+      <origin xyz="0.12920522689819336 2.384748697280884 -1.358384609222412" rpy="-2.9539058228307447 1.5017285664849958 -1.5969387610727035"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.168286994099617"/>
+      </geometry>
+      <origin xyz="0.9974911212921143 4.78225564956665 -0.7261691093444824" rpy="-1.2832362969690048 -1.1546624581045426 -2.0931650718026837"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.56 0.62 0.47"/>
+      </geometry>
+      <origin xyz="1.6986274719238281 5.010406970977783 0.24333500862121582" rpy="2.594599723815918 0.23162025213241577 1.9973030090332031"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.53 0.42 0.68"/>
+      </geometry>
+      <origin xyz="1.595726490020752 1.0090007781982422 0.9480268955230713" rpy="-1.2187960465722762 -0.04808339278166672 -0.620828541117259"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.15455658733844757" length="0.4806741774082184"/>
+      </geometry>
+      <origin xyz="2.2354001998901367 5.403701305389404 -0.7307864427566528" rpy="0.8497722148895264 -0.6210864225970669 -0.6797969977008267"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.35 0.49 0.56"/>
+      </geometry>
+      <origin xyz="0.5531015396118164 3.665086507797241 0.3179715871810913" rpy="2.286562204360962 -0.2432292143451138 -2.6924141089068816"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.3568572402000427"/>
+      </geometry>
+      <origin xyz="-2.024864912033081 3.936974048614502 -0.7663224935531616" rpy="0.5311165452003479 1.4256314039230347 -0.11181098619569976"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.27623242139816284"/>
+      </geometry>
+      <origin xyz="-0.38330507278442383 1.6244302988052368 0.7494847774505615" rpy="1.5136735439300537 1.0214390754699707 2.1383752822875977"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.74 0.57 0.59"/>
+      </geometry>
+      <origin xyz="0.3862926959991455 1.5264170169830322 -0.9765921235084534" rpy="1.6375611702627457 0.5277391989999495 2.8707402626699725"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1971605271100998" length="0.43945878744125366"/>
+      </geometry>
+      <origin xyz="0.044847965240478516 2.818168878555298 0.02061617374420166" rpy="-1.9684441725360318 -0.2206314245807095 2.327420473098755"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.2269594818353653" length="0.520561933517456"/>
+      </geometry>
+      <origin xyz="2.137601852416992 4.954943656921387 0.6886882781982422" rpy="0.8295956254005432 1.455484867095947 2.4513490200042725"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.24579788744449615" length="0.47092530131340027"/>
+      </geometry>
+      <origin xyz="-2.184634208679199 1.4181382656097412 -1.247073769569397" rpy="-0.40426093736757474 0.16669346392154694 -0.771679226552145"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.26824891567230225" length="0.568382740020752"/>
+      </geometry>
+      <origin xyz="1.7959790229797363 4.80753755569458 -1.30231511592865" rpy="1.208834497136525 -0.5930667797750748 0.6754792610830583"/>
+    </collision>
+  </link>
+  <link name="random_obstacle_5">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.3516489267349243" length="0.3482281565666199"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.4252071380615234 5.0155487060546875 -0.11270523071289062" rpy="-2.954764949279376 -0.13768920103972337 -2.1393413861566266"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.20683106780052185" length="0.44408583641052246"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.45423197746276855 5.82308292388916 0.28505754470825195" rpy="-1.3220952192889615 -0.7030203978167935 -0.6053498427020474"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.3741857409477234" length="0.6706832647323608"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.1952567100524902 2.3445968627929688 -2.034757137298584" rpy="1.2787645737356461 -0.48166283766692064 1.4006741921133317"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.1346730887889862" length="0.3506113588809967"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.195716142654419 0.8954181671142578 -1.8635212182998657" rpy="0.37306931614875793 1.566877126693728 0.24954377114772797"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.38 0.65 0.28"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.9733009338378906 5.502158164978027 -0.8923883438110352" rpy="2.2277700901031494 -1.4641287962542935 1.5916223526000977"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.28067928552627563" length="0.5971364974975586"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.254856586456299 3.5144596099853516 0.8158314228057861" rpy="-1.8296356519036971 0.04334321816498855 0.17273887793486495"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.53 0.37 0.63"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.07651281356811523 1.5010911226272583 -2.3731918334960938" rpy="2.890021324157715 0.37624698877334595 -0.9490774313556118"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.74 0.66 0.35"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-0.9873156547546387 2.415543794631958 -2.549250841140747" rpy="-1.9977021535211288 0.5127662738137923 2.3837293068594256"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.74 0.44 0.49"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.2275733947753906 4.061152458190918 0.07970309257507324" rpy="-2.716434303914206 0.6167048811912537 2.092660665512085"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.57 0.33 0.38"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-1.4279019832611084 2.9387412071228027 -1.8634783029556274" rpy="-0.38958755333954914 -1.2784999291128434 -3.073034646111079"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.22139118611812592"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.0295662879943848 2.1800742149353027 -1.231707215309143" rpy="0.3008520007133484 1.5216063261032113 0.39069810509681696"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.19356054067611694"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.6014323234558105 0.06316232681274414 -1.432898998260498" rpy="1.0246470848745624 0.645470293360301 -0.3423596938424788"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.35138165950775146"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.16469478607177734 3.6030654907226562 2.340395450592041" rpy="2.6239664554595947 1.3529478311538694 2.6334896087646484"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.3  0.46 0.61"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.3382954597473145 4.108403205871582 0.12717676162719727" rpy="1.3483503739065448 -0.00353345076506516 1.7384093681997574"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.2303232103586197"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="1.3002355098724365 0.818476676940918 2.307290554046631" rpy="-0.7005695422464094 0.6707753260904036 -2.8554239590936383"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.4  0.58 0.74"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="0.7856988906860352 2.038066864013672 2.7389822006225586" rpy="-2.726759823160716 0.9923521598153793 -3.033438766496726"/>
+    </visual>
+    <visual>
+      <geometry>
+        <cylinder radius="0.36492374539375305" length="0.6514413356781006"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.502391815185547 3.58695650100708 1.7326078414916992" rpy="-0.6230962912188931 -0.5154617468463345 1.3831686973571777"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.57 0.48 0.61"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.1409225463867188 3.7534117698669434 -2.431647777557373" rpy="1.3270862976736344 -0.9921077171987811 -2.7294225712590894"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.21377389132976532"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="-2.5375823974609375 5.751296520233154 2.515925884246826" rpy="-1.8916042486773892 0.27029934525489807 2.019350528717041"/>
+    </visual>
+    <visual>
+      <geometry>
+        <sphere radius="0.18513886630535126"/>
+      </geometry>
+      <material name="color[0.0, 0.75, 1.0, 1.0]"/>
+      <origin xyz="2.0220589637756348 1.8764305114746094 1.0096192359924316" rpy="-2.0238292852984827 0.5259314775466918 0.0941855236887932"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.3516489267349243" length="0.3482281565666199"/>
+      </geometry>
+      <origin xyz="2.4252071380615234 5.0155487060546875 -0.11270523071289062" rpy="-2.954764949279376 -0.13768920103972337 -2.1393413861566266"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.20683106780052185" length="0.44408583641052246"/>
+      </geometry>
+      <origin xyz="0.45423197746276855 5.82308292388916 0.28505754470825195" rpy="-1.3220952192889615 -0.7030203978167935 -0.6053498427020474"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.3741857409477234" length="0.6706832647323608"/>
+      </geometry>
+      <origin xyz="1.1952567100524902 2.3445968627929688 -2.034757137298584" rpy="1.2787645737356461 -0.48166283766692064 1.4006741921133317"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.1346730887889862" length="0.3506113588809967"/>
+      </geometry>
+      <origin xyz="-2.195716142654419 0.8954181671142578 -1.8635212182998657" rpy="0.37306931614875793 1.566877126693728 0.24954377114772797"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.38 0.65 0.28"/>
+      </geometry>
+      <origin xyz="0.9733009338378906 5.502158164978027 -0.8923883438110352" rpy="2.2277700901031494 -1.4641287962542935 1.5916223526000977"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.28067928552627563" length="0.5971364974975586"/>
+      </geometry>
+      <origin xyz="2.254856586456299 3.5144596099853516 0.8158314228057861" rpy="-1.8296356519036971 0.04334321816498855 0.17273887793486495"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.53 0.37 0.63"/>
+      </geometry>
+      <origin xyz="0.07651281356811523 1.5010911226272583 -2.3731918334960938" rpy="2.890021324157715 0.37624698877334595 -0.9490774313556118"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.74 0.66 0.35"/>
+      </geometry>
+      <origin xyz="-0.9873156547546387 2.415543794631958 -2.549250841140747" rpy="-1.9977021535211288 0.5127662738137923 2.3837293068594256"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.74 0.44 0.49"/>
+      </geometry>
+      <origin xyz="2.2275733947753906 4.061152458190918 0.07970309257507324" rpy="-2.716434303914206 0.6167048811912537 2.092660665512085"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.57 0.33 0.38"/>
+      </geometry>
+      <origin xyz="-1.4279019832611084 2.9387412071228027 -1.8634783029556274" rpy="-0.38958755333954914 -1.2784999291128434 -3.073034646111079"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.22139118611812592"/>
+      </geometry>
+      <origin xyz="2.0295662879943848 2.1800742149353027 -1.231707215309143" rpy="0.3008520007133484 1.5216063261032113 0.39069810509681696"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.19356054067611694"/>
+      </geometry>
+      <origin xyz="1.6014323234558105 0.06316232681274414 -1.432898998260498" rpy="1.0246470848745624 0.645470293360301 -0.3423596938424788"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.35138165950775146"/>
+      </geometry>
+      <origin xyz="0.16469478607177734 3.6030654907226562 2.340395450592041" rpy="2.6239664554595947 1.3529478311538694 2.6334896087646484"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.3  0.46 0.61"/>
+      </geometry>
+      <origin xyz="1.3382954597473145 4.108403205871582 0.12717676162719727" rpy="1.3483503739065448 -0.00353345076506516 1.7384093681997574"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.2303232103586197"/>
+      </geometry>
+      <origin xyz="1.3002355098724365 0.818476676940918 2.307290554046631" rpy="-0.7005695422464094 0.6707753260904036 -2.8554239590936383"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.4  0.58 0.74"/>
+      </geometry>
+      <origin xyz="0.7856988906860352 2.038066864013672 2.7389822006225586" rpy="-2.726759823160716 0.9923521598153793 -3.033438766496726"/>
+    </collision>
+    <collision>
+      <geometry>
+        <cylinder radius="0.36492374539375305" length="0.6514413356781006"/>
+      </geometry>
+      <origin xyz="2.502391815185547 3.58695650100708 1.7326078414916992" rpy="-0.6230962912188931 -0.5154617468463345 1.3831686973571777"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.57 0.48 0.61"/>
+      </geometry>
+      <origin xyz="-2.1409225463867188 3.7534117698669434 -2.431647777557373" rpy="1.3270862976736344 -0.9921077171987811 -2.7294225712590894"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.21377389132976532"/>
+      </geometry>
+      <origin xyz="-2.5375823974609375 5.751296520233154 2.515925884246826" rpy="-1.8916042486773892 0.27029934525489807 2.019350528717041"/>
+    </collision>
+    <collision>
+      <geometry>
+        <sphere radius="0.18513886630535126"/>
+      </geometry>
+      <origin xyz="2.0220589637756348 1.8764305114746094 1.0096192359924316" rpy="-2.0238292852984827 0.5259314775466918 0.0941855236887932"/>
+    </collision>
+  </link>
+  <link name="gate_1">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_2">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_4">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_6">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_7">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_8">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_9">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <link name="gate_10">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <material name="color[1.0, 0.5, 0.3, 1.0]"/>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 1.3  0.15"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.575" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.15 0.15 1.3 "/>
+      </geometry>
+      <origin xyz="0.0 -0.575 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <joint name="base_obstacle_0" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_0"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-11.35 3.75 1.05" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_1" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_1"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-13.2 6.45 1.05" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_2" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_2"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.5 4.0 6.0" rpy="0.7853981633974483 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_3" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_3"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 4.0 0.325" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_4" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_4"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 6.0 0.325" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_5" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_5"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 6.25 0.975" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_6" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_6"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.25 4.0 0.975" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_7" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_7"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.75 6.0 1.625" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_8" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_8"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 4.0 1.625" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_9" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_9"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 4.5 2.275" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_10" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_10"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 5.15 2.275" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_11" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_11"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-3.5 5.8 2.275" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_12" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_12"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="4.0 5.0 1.0" rpy="0.0 0.0 0.7853981633974483"/>
+  </joint>
+  <joint name="base_obstacle_13" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_13"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.0 -0.7 1.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_14" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_14"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.0 1.1 1.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_15" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_15"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.0 -0.7 1.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_16" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_16"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.0 1.1 1.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_17" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_17"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="4.0 0.0 1.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_18" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_18"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="5.6 -0.8 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_19" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_19"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.3 -1.05 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_20" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_20"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.3 -0.28 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_21" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_21"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="5.6 0.8 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_22" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_22"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.3 0.67 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_23" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_23"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.3 1.4 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_24" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_24"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="3.5 0.0 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_25" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_25"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="4.2 -0.3 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_26" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_26"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="4.2 0.3 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_27" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_27"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="1.6 -0.8 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_28" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_28"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.3 -1.05 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_29" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_29"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.3 -0.28 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_30" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_30"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="1.6 0.8 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_31" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_31"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.3 0.67 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_obstacle_32" type="fixed">
+    <parent link="base"/>
+    <child link="obstacle_32"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="2.3 1.4 2.0" rpy="0.0 0.0 0.0"/>
+  </joint>
+  <joint name="base_random_obstacle_0" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_0"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-6.874023199081421 -0.013643383979797363 1.8409327864646912" rpy="0.0 0.04176143518969776 -3.0993392535157573"/>
+  </joint>
+  <joint name="base_random_obstacle_1" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_1"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-10.755595684051514 2.567715287208557 1.420547068119049" rpy="0.0 0.10401933439851463 2.0791036934861866"/>
+  </joint>
+  <joint name="base_random_obstacle_2" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_2"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-9.875 5.0194947719573975 1.2294062972068787" rpy="0.0 -0.05417895364433465 -0.0967518031363746"/>
+  </joint>
+  <joint name="base_random_obstacle_3" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_3"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="3.8941770493984222 5.573401927947998 1.3523299098014832" rpy="0.0 -0.0441485892554244 0.12580624010156527"/>
+  </joint>
+  <joint name="base_random_obstacle_4" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_4"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="7.109131813049316 2.6916585564613342 3.5050458908081055" rpy="0.0 -0.5456162516209558 -1.6014719122491685"/>
+  </joint>
+  <joint name="base_random_obstacle_5" type="fixed">
+    <parent link="base"/>
+    <child link="random_obstacle_5"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.8979332447052 2.6523543000221252 6.913176536560059" rpy="0.0 -0.40601772061079744 1.6044765366295912"/>
+  </joint>
+  <joint name="base_gate_1" type="fixed">
+    <parent link="base"/>
+    <child link="gate_1"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-4.4868550300598145 0.08728265762329102 1.940771460533142" rpy="-0.128042271852731 0.15170334293937857 -3.1089271186072085"/>
+  </joint>
+  <joint name="base_gate_2" type="fixed">
+    <parent link="base"/>
+    <child link="gate_2"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-9.261191368103027 -0.11456942558288574 1.7410941123962402" rpy="-0.04928495847571077 0.26908992444129587 -3.0899976358950343"/>
+  </joint>
+  <joint name="base_gate_4" type="fixed">
+    <parent link="base"/>
+    <child link="gate_4"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="-7.5 4.788989543914795 1.3588125705718994" rpy="-0.20988369221963113 0.016472962116739112 -0.34476504497546967"/>
+  </joint>
+  <joint name="base_gate_6" type="fixed">
+    <parent link="base"/>
+    <child link="gate_6"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="0.5779253840446472 5.153981685638428 1.2046598196029663" rpy="-0.11008600807141262 0.04689414721898417 -0.09465948100956051"/>
+  </joint>
+  <joint name="base_gate_7" type="fixed">
+    <parent link="base"/>
+    <child link="gate_7"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="7.210428714752197 5.992822170257568 1.5" rpy="-0.1526019933597122 0.2015033900594243 0.06245703645102675"/>
+  </joint>
+  <joint name="base_gate_8" type="fixed">
+    <parent link="base"/>
+    <child link="gate_8"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="7.0078349113464355 -0.6095050573348999 5.510091781616211" rpy="-0.1348652655983788 -0.2677414827576047 -2.8551704773000983"/>
+  </joint>
+  <joint name="base_gate_9" type="fixed">
+    <parent link="base"/>
+    <child link="gate_9"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="6.788031578063965 5.91421365737915 8.316261291503906" rpy="-0.006072340180516923 0.27318182152193216 -0.2480160311298762"/>
+  </joint>
+  <joint name="base_gate_10" type="fixed">
+    <parent link="base"/>
+    <child link="gate_10"/>
+    <axis xyz="1. 0. 0."/>
+    <origin xyz="9.062963485717773 -0.48254019021987915 1.6541759967803955" rpy="-0.12021209554995048 0.10695945695165959 3.0688678494902364"/>
+  </joint>
+  <material name="color[1.0, 1.0, 1.0, 1.0]">
+    <color rgba="1. 1. 1. 1."/>
+  </material>
+  <material name="color[0.0, 0.75, 1.0, 1.0]">
+    <color rgba="0.   0.75 1.   1.  "/>
+  </material>
+  <material name="color[1.0, 0.5, 0.3, 1.0]">
+    <color rgba="1.  0.5 0.3 1. "/>
+  </material>
+</robot>

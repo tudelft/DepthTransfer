@@ -1,0 +1,9 @@
+python3 example_mavrl.py --task="mavrl_zoo"  --num_envs 128 --num_maps 128
+
+python3 collect_data.py --task="mavrl_zoo"  --num_envs 16 --num_maps 16 --trial 410 --iter 260
+
+python train_vae.py
+
+python train_lstm.py --trial 410 --iter 260 --dir ../saved/zoo_dataset/ --lstm_exp ZOO_LSTM
+
+python3 example_mavrl.py --task="mavrl_zoo"  --num_envs 128 --num_maps 128 --retrain 1 --trial 500 --iter 1950

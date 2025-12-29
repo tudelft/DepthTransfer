@@ -1,0 +1,1 @@
+from aerial_gym.mav_baselines.torch.controlNet.ldm.modules.losses.vae_kl_discriminator import VAEWithDiscriminator

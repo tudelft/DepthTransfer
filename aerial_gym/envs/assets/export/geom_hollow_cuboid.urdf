@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<robot name="geom_hollow_cuboid">
+  <link name="base">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 -0.0 0.0"/>
+      <mass value="1.0"/>
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.17142643 1.38255012 0.26536053"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 0.4310745894908905" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.17142643 1.38255012 0.26536053"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.0 -0.4310745894908905" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.17142643 0.23194849 1.12750971"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 0.5753008127212524 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <visual>
+      <geometry>
+        <box size="0.17142643 0.23194849 1.12750971"/>
+      </geometry>
+      <material name="color[1.0, 1.0, 1.0, 1.0]"/>
+      <origin xyz="0.0 -0.5753008127212524 0.0" rpy="0.0 0.0 0.0"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.17142643 1.38255012 0.26536053"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.4310745894908905" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.17142643 1.38255012 0.26536053"/>
+      </geometry>
+      <origin xyz="0.0 0.0 -0.4310745894908905" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.17142643 0.23194849 1.12750971"/>
+      </geometry>
+      <origin xyz="0.0 0.5753008127212524 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <collision>
+      <geometry>
+        <box size="0.17142643 0.23194849 1.12750971"/>
+      </geometry>
+      <origin xyz="0.0 -0.5753008127212524 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+  </link>
+  <material name="color[1.0, 1.0, 1.0, 1.0]">
+    <color rgba="1. 1. 1. 1."/>
+  </material>
+</robot>
