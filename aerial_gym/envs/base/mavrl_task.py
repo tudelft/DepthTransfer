@@ -1,24 +1,27 @@
 # general python imports
 import time
 import logging
-import trimesh as tm
-from urdfpy import URDF
-import warp as wp
 import math
 import numpy as np
 import random
 import os
-import torch
 import sys
 import cv2
-from gymnasium import spaces
 from typing import Dict, Any, Optional, List, Tuple
+# torch & gymnasium
+from gymnasium import spaces
 
+# warp
+import warp as wp
+from typing import Union
 # isaacgym imports
 from isaacgym import gymutil, gymtorch, gymapi
 from isaacgym.torch_utils import *
 from aerial_gym.utils.torch_utils_contrib import *
-from aerial_gym import AERIAL_GYM_ROOT_DIR, AERIAL_GYM_ROOT_DIR
+import torch
+
+# aerial_gym imports
+from aerial_gym import AERIAL_GYM_ROOT_DIR
 from aerial_gym.envs.base.base_task import BaseTask
 from .mavrl_task_config import MAVRLTaskCfg
 from .zoo_task_config import ZooTaskCfg
@@ -36,7 +39,7 @@ from aerial_gym.utils.pcd_cameras import PCDCameraManager
 
 class MAVRLTask(BaseTask):
 
-    def __init__(self, cfg : ZooTaskCfg, sim_params, physics_engine, sim_device, headless):
+    def __init__(self, cfg: Union[ZooTaskCfg, MAVRLTaskCfg], sim_params, physics_engine, sim_device, headless):
         self.cfg = cfg
         self.sim_params = sim_params
         self.physics_engine = physics_engine
@@ -49,7 +52,7 @@ class MAVRLTask(BaseTask):
         self.use_warp = self.cfg.env.use_warp_rendering
         self.seed = self.cfg.seed
         self.env_asset_manager = MAVRLAssetManager(self.cfg, sim_device)
-        # self.sample_timestep_for_latency = self.cfg.env.sample_timestep_for_latency
+
         if self.enable_isaacgym_cameras:
             self.cfg.env.num_observations += self.cfg.LatentSpaceCfg.state_dims
             
@@ -60,37 +63,31 @@ class MAVRLTask(BaseTask):
         elif self.sensor_config.sensor_type == "camera":
             self.sensor_params = self.cfg.camera_params
         else:
-            # Raise an error with message
             raise ValueError("Sensor type not supported. Use either lidar or camera")
         
         # save control data for debugging
         self.save_control_data = self.cfg.control.save_control_data
         self.control_data_path = self.cfg.control.control_data_path
         if self.save_control_data:
-            if not os.path.exists(self.control_data_path):
-                os.makedirs(self.control_data_path)
-            if not os.path.exists(self.control_data_path + "/states_data"):
-                os.makedirs(self.control_data_path + "/states_data")
-            if not os.path.exists(self.control_data_path + "/actions_data"):
-                os.makedirs(self.control_data_path + "/actions_data")
-            if not os.path.exists(self.control_data_path + "/control_data"):
-                os.makedirs(self.control_data_path + "/control_data")
-            if not os.path.exists(self.control_data_path + "/reference_data"):
-                os.makedirs(self.control_data_path + "/reference_data")
+            os.makedirs(self.control_data_path, exist_ok=True)
+            os.makedirs(os.path.join(self.control_data_path, "states_data"), exist_ok=True)
+            os.makedirs(os.path.join(self.control_data_path, "actions_data"), exist_ok=True)
+            os.makedirs(os.path.join(self.control_data_path, "control_data"), exist_ok=True)
+            os.makedirs(os.path.join(self.control_data_path, "reference_data"), exist_ok=True)
+            
         print("Control data path: ", self.control_data_path)
-        # Print near and far out of range values
         print("Near out of range value: ", self.sensor_params.near_out_of_range_value)
         print("Far out of range value: ", self.sensor_params.far_out_of_range_value)
-        # sensor fovs
         print("Horizontal FOV: ", self.sensor_params.horizontal_fov_deg)
         print("Vertical FOV: ", self.sensor_params.vertical_fov_deg)
 
         self.imu_params = self.cfg.imu_config
         self.gravity = torch.tensor(self.cfg.sim.gravity, device=self.sim_device_id, requires_grad=False)
         
-        # update number of observations before calling super class that initializes Box action spaces
+        # Initialize super class
         super().__init__(self.cfg, sim_params, physics_engine, sim_device, headless)
-        # initialize observation and action spaces
+
+        # Initialize spaces
         self.obs_space = spaces.Dict({
             'image': spaces.Box(
                 low=0,
@@ -111,6 +108,7 @@ class MAVRLTask(BaseTask):
             dtype=np.float64,
         )
 
+        # Initialize buffers
         self.obs_dict = {
             'image': torch.zeros((self.num_envs, 1, self.cfg.LatentSpaceCfg.imput_image_size[0], self.cfg.LatentSpaceCfg.imput_image_size[1]), dtype=torch.uint8, device=self.device),
             'state': torch.zeros((self.num_envs, 1, self.num_obs), dtype=torch.float32, device=self.device)
@@ -127,10 +125,12 @@ class MAVRLTask(BaseTask):
                 self.stereo_ground_camera_array = torch.zeros((self.num_envs, self.sensor_params.height, self.sensor_params.width), dtype=torch.float32, device=self.device, requires_grad=False)
         self.goal_threshold = self.cfg.env.goal_arrive_threshold
 
+        # Refresh tensors
         self.gym.refresh_actor_root_state_tensor(self.sim)
         self.gym.refresh_net_contact_force_tensor(self.sim)
         self.gym.refresh_force_sensor_tensor(self.sim)
 
+        # Spawning configs
         self.robot_spawning_pos_min = torch.tensor(self.cfg.robot_spawning_config.min_position_ratio, device=self.device).expand(self.num_envs, -1)
         self.robot_spawning_pos_max = torch.tensor(self.cfg.robot_spawning_config.max_position_ratio, device=self.device).expand(self.num_envs, -1)
         self.robot_spawning_euler_min = torch.tensor(self.cfg.robot_spawning_config.min_euler_angles_absolute, device=self.device).expand(self.num_envs, -1)
@@ -142,8 +142,9 @@ class MAVRLTask(BaseTask):
         self.goal_spawning_offset = torch.tensor(self.cfg.goal_spawning_config.offset, device=self.device).expand(self.num_envs, -1)
         self.random_start_yaw = self.cfg.robot_spawning_config.random_start_yaw
 
-        num_actors = self.env_asset_manager.get_env_actor_count() + self.num_robots_per_map # Number of obstacles in the environment + one robot
-        bodies_per_map = self.env_asset_manager.get_env_link_count() + self.num_robots_per_map * self.robot_num_bodies # Number of links in the environment + robot
+        # View wrapping
+        num_actors = self.env_asset_manager.get_env_actor_count() + self.num_robots_per_map 
+        bodies_per_map = self.env_asset_manager.get_env_link_count() + self.num_robots_per_map * self.robot_num_bodies
         self.unfolded_vec_root_tensor = gymtorch.wrap_tensor(self.root_tensor)
         self.vec_root_tensor = self.unfolded_vec_root_tensor.view(self.num_maps, num_actors, 13)
         self.root_states = self.vec_root_tensor[:, :self.num_robots_per_map, :]
@@ -162,16 +163,15 @@ class MAVRLTask(BaseTask):
         self.mean_acc = (max_acc + min_acc) / 2.0
         self.std_acc = (max_acc - min_acc) / 2.0
 
-        # cannot use both IsaacGym cameras and warp
         if not self.enable_isaacgym_cameras:
             print("[ERROR] Do not use both IsaacGym cameras and warp")
             sys.exit(0)
 
-        # if any of the shape is 0 set opbject to none
         if any([self.env_asset_root_states.shape[0] == 0, self.env_asset_root_states.shape[1] == 0, self.env_asset_root_states.shape[2] == 0]):
             self.env_asset_root_states = None
         self.init_obstacles()
 
+        # Samplers
         force_noise = self.cfg.env_force_perturbations_noise
         self.env_force_sampler = Sampler(force_noise.enable, force_noise.distribution, force_noise.dist_params, transform_after_sampling=force_noise.transform_after_sampling, size=torch.Size([self.num_maps, self.num_robots_per_map, 3]), device=self.device)
         
@@ -201,6 +201,7 @@ class MAVRLTask(BaseTask):
             self.accel_meas = torch.zeros((self.num_envs, 3), device=self.device, requires_grad=False)
             self.angvel_meas = torch.zeros((self.num_envs, 3), device=self.device, requires_grad=False)
 
+        # Pre-allocate tensors
         self.collisions = torch.zeros(self.num_maps, self.num_robots_per_map * self.robot_num_bodies, device=self.device)
         self.ones = torch.ones(self.num_maps, self.num_robots_per_map, device=self.device, requires_grad=False)
         self.zeros = torch.zeros(self.num_maps, self.num_robots_per_map, device=self.device, requires_grad=False)
@@ -254,13 +255,15 @@ class MAVRLTask(BaseTask):
         self.flight_lower_bound = torch.FloatTensor(self.cfg.env.flight_lower_bound).to(self.device).expand(self.num_maps, self.num_robots_per_map, -1)
         self.flight_upper_bound = torch.FloatTensor(self.cfg.env.flight_upper_bound).to(self.device).expand(self.num_maps, self.num_robots_per_map, -1)
 
+        # Pre-compute boundary lookup tables for vectorized access
+        self._init_boundary_lookups()
+
         if self.viewer:
             cam_pos_x, cam_pos_y, cam_pos_z = self.cfg.viewer.pos[0], self.cfg.viewer.pos[1], self.cfg.viewer.pos[2]
             cam_target_x, cam_target_y, cam_target_z = self.cfg.viewer.lookat[0], self.cfg.viewer.lookat[1], self.cfg.viewer.lookat[2]
             cam_pos = gymapi.Vec3(cam_pos_x, cam_pos_y, cam_pos_z)
             cam_target = gymapi.Vec3(cam_target_x, cam_target_y, cam_target_z)
-            cam_ref_env = self.cfg.viewer.ref_env
-            
+            # cam_ref_env = self.cfg.viewer.ref_env # Unused in original
             self.gym.viewer_camera_look_at(self.viewer, None, cam_pos, cam_target)
         
         # logging
@@ -270,6 +273,24 @@ class MAVRLTask(BaseTask):
             # initialize start and end points for evaluation trials
             self.total_pos_rand_samples = torch.rand((self.cfg.logging.trial_nums*5, self.num_envs, 3), device=self.device)
             self.total_goal_rand_samples = torch.rand((self.cfg.logging.trial_nums*5, self.num_envs, 3), device=self.device)
+
+    def _init_boundary_lookups(self):
+        # Pre-allocate boundary tensors to avoid python loop in get_boundaries
+        self.boundary_point_pairs = torch.stack([
+            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [0, 0]
+            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),   # [0, 1]
+            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [1, 0]
+            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device)   # [1, 1]
+        ])
+        self.boundary_yaw = torch.tensor([0, 0, 0, 0], device=self.device, dtype=torch.float32)
+
+        self.goal_boundary_point_pairs = torch.stack([
+            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),     # [0, 0]
+            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),   # [0, 1]
+            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),     # [1, 0]
+            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device)   # [1, 1]
+        ])
+        self.goal_boundary_yaw = torch.tensor([np.pi, np.pi, np.pi, np.pi], device=self.device, dtype=torch.float32)
 
     def create_sim(self):
         self.sim = self.gym.create_sim(
@@ -302,14 +323,9 @@ class MAVRLTask(BaseTask):
             sensor_props.enable_constraint_solver_forces = True
             sensor_props.use_world_frame = self.imu_params.world_frame
             position = gymapi.Vec3(self.imu_params.pos[0], self.imu_params.pos[1], self.imu_params.pos[2])
-
-            # NOTE orientation of the sensor relative to the body is set to zero here,
-            # and the measured value is transformed to the desired orientationin the imu simulator code.
-            # This is done to let the physics engine handle the effects of rotating
-            # frames such as coriolis and centrifugal forces on the force sensor.
             quat_imu = gymapi.Quat(0.0, 0.0, 0.0, 1.0)
             force_sensor_pose = gymapi.Transform(p=position, r=quat_imu)
-            force_sensor_idx = self.gym.create_asset_force_sensor(robot_asset, 0, force_sensor_pose, sensor_props)
+            self.gym.create_asset_force_sensor(robot_asset, 0, force_sensor_pose, sensor_props)
 
             self.imu_sensor = TensorIMUV2(num_envs=self.num_envs, 
                                         dt=self.dt,
@@ -319,14 +335,11 @@ class MAVRLTask(BaseTask):
         self.robot_num_bodies = self.gym.get_asset_rigid_body_count(robot_asset)
 
         start_pose = gymapi.Transform()
-        # create env instance
         pos = torch.tensor([0, 0, 0], device=self.device)
         start_pose.p = gymapi.Vec3(*pos)
         self.env_spacing = self.cfg.env.env_spacing
-        env_lower = gymapi.Vec3(-self.env_spacing, -
-                                self.env_spacing, -self.env_spacing)
-        env_upper = gymapi.Vec3(
-            self.env_spacing, self.env_spacing, self.env_spacing)
+        env_lower = gymapi.Vec3(-self.env_spacing, -self.env_spacing, -self.env_spacing)
+        env_upper = gymapi.Vec3(self.env_spacing, self.env_spacing, self.env_spacing)
         self.actor_handles = []
         self.env_asset_handles = []
         self.envs = []
@@ -345,11 +358,9 @@ class MAVRLTask(BaseTask):
         camera_props.height = self.sensor_params.height
         camera_props.far_plane = self.sensor_params.max_range
         camera_props.horizontal_fov = self.sensor_params.horizontal_fov_deg
-        # local camera transform
+        
         local_transform = gymapi.Transform()
-        # position of the camera relative to the body
         local_transform.p = gymapi.Vec3(0.15, 0.00, 0.10)
-        # orientation of the camera relative to the body
         local_transform.r = gymapi.Quat(0.0, 0.0, 0.0, 1.0)
 
         self.segmentation_counter = 0
@@ -360,17 +371,13 @@ class MAVRLTask(BaseTask):
         self.global_vertex_semantics = []
         item_lookup_dict = {}
 
-        # configure point cloud loader
         if self.enable_pc_loader:
             self.pcd_cameras = PCDCameraManager(self.gym, self.sim, self.cfg.pcd_camera_params)
 
         for i in range(self.num_maps):
-            self.env_meshes = []
             env_handle = self.gym.create_env(self.sim, env_lower, env_upper, int(np.sqrt(self.num_maps)))
 
             for j in range(self.num_robots_per_map):
-                # if i % 10 == 0:
-                #     print("Env :", i, " created.")
                 self.global_asset_counter += 1
                 actor_handle = self.gym.create_actor(env_handle, robot_asset, start_pose, "robot", i, self.cfg.robot_asset.collision_mask, 0)
 
@@ -417,8 +424,6 @@ class MAVRLTask(BaseTask):
             env_asset_list = self.env_asset_manager.prepare_assets_for_simulation()
             asset_counter = 0
 
-            # have the segmentation counter be the max defined semantic id + 1. Use this to set the semantic mask of objects that are
-            # do not have a defined semantic id in the config file, but still requre one. Increment for every instance in the next snippet
             for dict_item in env_asset_list:
                 self.segmentation_counter = max(self.segmentation_counter, int(dict_item["semantic_id"])+1)
 
@@ -442,13 +447,13 @@ class MAVRLTask(BaseTask):
                 else:
                     object_segmentation_id = semantic_id
 
-                # lookup asset before loading
                 if folder_path_plus_filename in item_lookup_dict:
                     loaded_asset = item_lookup_dict[folder_path_plus_filename]
                 else:
                     loaded_asset = self.gym.load_asset(self.sim, folder_path, filename, asset_options)
                     item_lookup_dict[folder_path_plus_filename] = loaded_asset
 
+                # Logic to preserve original segmentation counter if warped (from original code flow)
                 segmentation_counter_before_warp = self.segmentation_counter - 1
                 segmentation_id_before_warp = object_segmentation_id
 
@@ -483,10 +488,7 @@ class MAVRLTask(BaseTask):
                     color = np.random.randint(low=50,high=200,size=3)
 
                 if create_texture:
-                    # create a random pixelArray as a numpy array of type uint8_t with size [height, width*4] of packed RGBA values. Alpha values should always be 255 on input.
                     pixelArray = np.random.randint(low=50, high=255, size=(256, 256, 4), dtype=np.uint8)
-                    # set Alpha values to 255
-                    # pixelArray[:, :, 3] = 255
                     pixelArray.reshape(256, 256*4)
                     texture_handle = self.gym.create_texture_from_buffer(self.sim, 256, 256, pixelArray)
                     self.gym.set_rigid_body_texture(env_handle, env_asset_handle, 0, gymapi.MESH_VISUAL, texture_handle)
@@ -510,7 +512,6 @@ class MAVRLTask(BaseTask):
         print("Robot Inertia:", self.robot_inertia[0])
         
         print("\n\n\n\n\n ENVIRONMENT CREATED \n\n\n\n\n\n")
-        # Total number of vertices in all meshes:
         print("\n\n\n\n\n\n", "Total number of vertices in all meshes: ", self.global_vertex_counter, "\n\n\n\n\n")
 
 
@@ -524,8 +525,6 @@ class MAVRLTask(BaseTask):
 
         if if_reset_obstacles:
             self.reset_obstacles(if_easy_start=if_easy_start)
-            # self.extras['success rate'] = self.cal_success_rate()
-            # print("Success rate: ", self.cal_success_rate().cpu().numpy())
             self.total_trials[env_ids] = 0
             self.available_total_trials[env_ids] = 0
             self.success_trials[env_ids] = 0
@@ -539,8 +538,6 @@ class MAVRLTask(BaseTask):
                                                     self.vertex_maps_per_env_original[:])
         
         self.warp_sensor.refit_meshes(self.warp_mesh_per_env, [0])
-        # for e_i in env_ids:
-        #     self.warp_mesh_per_env[e_i].refit()
         return
     
     def update_warp_cam_tfs(self, env_ids):
@@ -552,73 +549,18 @@ class MAVRLTask(BaseTask):
         return
     
     def get_boundaries(self, arrays):
-        # point_pairs = [
-        #     torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [0, 0]
-        #     torch.tensor([[0.05, 0.95, 0.3], [0.95, 1.0, 0.6]], device=self.device),   # [0, 1]
-        #     torch.tensor([[0.05, 0.0, 0.3], [0.95, 0.05, 0.6]], device=self.device),     # [1, 0]
-        #     torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device)   # [1, 1]
-        # ]
-        # yaw = [
-        #     0, -np.pi/2, np.pi/2, np.pi
-        # ]
-        point_pairs = [
-            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [0, 0]
-            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),   # [0, 1]
-            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [1, 0]
-            torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device)   # [1, 1]
-        ]
-        yaw = [
-            0, 0, 0, 0
-        ]
-        results = torch.stack([point_pairs[(array[0] * 2 + array[1]).item()] for array in arrays])
-        yaw_np = np.stack([yaw[(array[0] * 2 + array[1]).item()] for array in arrays])
-        yaw_tensor = torch.tensor(yaw_np, device=self.device, dtype=torch.float32)
+        # Optimization: Use pre-computed tensors and indexing instead of Python list construction
+        indices = arrays[:, 0] * 2 + arrays[:, 1]
+        results = self.boundary_point_pairs.index_select(0, indices.flatten()).view(-1, 2, 3)
+        yaw_tensor = self.boundary_yaw.index_select(0, indices.flatten())
         return results, yaw_tensor
     
     def get_goal_boundaries(self, arrays):
-        point_pairs = [
-            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),     # [0, 0]
-            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),   # [0, 1]
-            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),     # [1, 0]
-            torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device)   # [1, 1]
-        ]
-        yaw = [
-            np.pi, np.pi, np.pi, np.pi
-        ]
-        results = torch.stack([point_pairs[(array[0] * 2 + array[1]).item()] for array in arrays])
-        yaw_np = np.stack([yaw[(array[0] * 2 + array[1]).item()] for array in arrays])
-        yaw_tensor = torch.tensor(yaw_np, device=self.device, dtype=torch.float32)
+        # Optimization: Use pre-computed tensors and indexing
+        indices = arrays[:, 0] * 2 + arrays[:, 1]
+        results = self.goal_boundary_point_pairs.index_select(0, indices.flatten()).view(-1, 2, 3)
+        yaw_tensor = self.goal_boundary_yaw.index_select(0, indices.flatten())
         return results, yaw_tensor
-    
-    # def get_boundaries(self, arrays):
-    #     point_pairs = [
-    #         torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [0, 0]
-    #         torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),   # [0, 1]
-    #         torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [1, 0]
-    #         torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device)   # [1, 1]
-    #     ]
-    #     yaw = [
-    #         0, 0, np.pi, np.pi
-    #     ]
-    #     results = torch.stack([point_pairs[(array[0] * 2 + array[1]).item()] for array in arrays])
-    #     yaw_np = np.stack([yaw[(array[0] * 2 + array[1]).item()] for array in arrays])
-    #     yaw_tensor = torch.tensor(yaw_np, device=self.device, dtype=torch.float32)
-    #     return results, yaw_tensor
-    
-    # def get_goal_boundaries(self, arrays):
-    #     point_pairs = [
-    #         torch.tensor([[0.0, 0.05, 0.3], [0.05, 0.95, 0.6]], device=self.device),     # [0, 0]
-    #         torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),   # [0, 1]
-    #         torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device),     # [1, 0]
-    #         torch.tensor([[0.95, 0.05, 0.3], [1.0, 0.95, 0.6]], device=self.device)   # [1, 1]
-    #     ]
-    #     yaw = [
-    #         np.pi, np.pi, np.pi, np.pi
-    #     ]
-    #     results = torch.stack([point_pairs[(array[0] * 2 + array[1]).item()] for array in arrays])
-    #     yaw_np = np.stack([yaw[(array[0] * 2 + array[1]).item()] for array in arrays])
-    #     yaw_tensor = torch.tensor(yaw_np, device=self.device, dtype=torch.float32)
-    #     return results, yaw_tensor
 
     def reset_robots(self, env_ids):
         num_resets = len(env_ids)
@@ -632,12 +574,13 @@ class MAVRLTask(BaseTask):
         drone_boundaries, yaw_tensor = self.get_boundaries(area)
         drone_random_area_min = drone_boundaries[:, 0, :]
         drone_random_area_max = drone_boundaries[:, 1, :]
+        
         # sample and set drone and goal positions
         drone_pos_rand_sample = torch.rand((num_resets, 3), device=self.device)
         if self.enable_pc_loader:
-            for i in range(num_resets):
-                if self.available_total_trials[env_ids[i]] < self.cfg.logging.trial_nums:
-                    drone_pos_rand_sample[i] = self.total_pos_rand_samples[self.total_trials[env_ids[i]], env_ids[i]]
+            mask = self.available_total_trials[env_ids] < self.cfg.logging.trial_nums
+            if mask.any():
+                drone_pos_rand_sample[mask] = self.total_pos_rand_samples[self.total_trials[env_ids[mask]], env_ids[mask]]
 
         drone_spawning_min_bounds = self.env_lower_bound[env_ids] + self.robot_spawning_offset[env_ids]
         drone_spawning_max_bounds = self.env_upper_bound[env_ids] - self.robot_spawning_offset[env_ids]
@@ -645,10 +588,13 @@ class MAVRLTask(BaseTask):
         drone_spawning_max_bounds[:, 2] = 1.5
         drone_spawning_ratio_in_env_bound = drone_pos_rand_sample*(drone_random_area_max - drone_random_area_min) + drone_random_area_min
         drone_positions = drone_spawning_min_bounds + drone_spawning_ratio_in_env_bound*(drone_spawning_max_bounds - drone_spawning_min_bounds)
+        
+        # NOTE: 0.0 multiplication preserves shape and device without new allocation, but random sampling happens. 
+        # Kept original logic for seed consistency.
         drone_velocities = 0.0*torch_rand_float(-1.0, 1.0, (num_resets, 3), self.device)
         drone_eulers = torch_rand_float_tensor(self.robot_spawning_euler_min[env_ids], self.robot_spawning_euler_max[env_ids])
         drone_eulers[:, 2] += yaw_tensor
-        # if reset the drone foward direction to be the same as the goal direction
+        
         if not self.random_start_yaw:
             drone_eulers[:, 2] = yaw_tensor
         drone_quats = quat_from_euler_xyz(drone_eulers[:, 0], drone_eulers[:, 1], drone_eulers[:, 2])
@@ -662,15 +608,14 @@ class MAVRLTask(BaseTask):
             goal_boundaries, _ = self.get_goal_boundaries(goal_area)
             goal_random_area_min = goal_boundaries[:, 0, :]
             goal_random_area_max = goal_boundaries[:, 1, :]
-            # drone_quats = quat_from_euler_xyz(torch.zeros_like(drone_eulers[:, 0]), torch.zeros_like(drone_eulers[:, 1]), yaw_tensor)
 
             # sample and set drone and goal positions
             goal_pos_rand_sample = torch.rand((num_resets, 3), device=self.device)
 
             if self.enable_pc_loader:
-                for j in range(num_resets):
-                    if self.available_total_trials[env_ids[j]] < self.cfg.logging.trial_nums:
-                        goal_pos_rand_sample[j] = self.total_goal_rand_samples[self.total_trials[env_ids[j]], env_ids[j]]
+                mask = self.available_total_trials[env_ids] < self.cfg.logging.trial_nums
+                if mask.any():
+                     goal_pos_rand_sample[mask] = self.total_goal_rand_samples[self.total_trials[env_ids[mask]], env_ids[mask]]
 
             goal_spawning_min_bounds = self.env_lower_bound[env_ids] + self.goal_spawning_offset[env_ids]
             goal_spawning_max_bounds = self.env_upper_bound[env_ids] - self.goal_spawning_offset[env_ids]
@@ -679,26 +624,30 @@ class MAVRLTask(BaseTask):
             goal_spawning_ratio_in_env_bound = goal_pos_rand_sample*(goal_random_area_max - goal_random_area_min) + goal_random_area_min
             goal_positions = goal_spawning_min_bounds + goal_spawning_ratio_in_env_bound*(goal_spawning_max_bounds - goal_spawning_min_bounds)
             goal_positions_total[:, i, :] = goal_positions
-        # set drone positions that are sampled within environment bounds
-        # print("drone_positions: ", drone_positions)
-        # print("goal_positions_total: ", goal_positions_total)
+
         maps_ids = env_ids // self.num_robots_per_map
         robot_ids = env_ids % self.num_robots_per_map
         pos_setting_start = 0
         pos_setting_end = 0
-        for map_id in maps_ids.unique():
+        
+        # This loop sets state per map block
+        unique_maps = maps_ids.unique()
+        for map_id in unique_maps:
             map_env_ids = env_ids[maps_ids == map_id]
             pos_setting_end += len(map_env_ids)
             map_robot_ids = robot_ids[maps_ids == map_id]
+            
             self.root_states[map_id, map_robot_ids, 0:3] = drone_positions[pos_setting_start:pos_setting_end]
             self.root_states[map_id, map_robot_ids, 3:7] = drone_quats[pos_setting_start:pos_setting_end]
             self.root_states[map_id, map_robot_ids, 7:10] = drone_velocities[pos_setting_start:pos_setting_end]
-            self.root_states[map_id, map_robot_ids, 10:13] = torch.zeros((len(map_env_ids), 3), device=self.device)
+            self.root_states[map_id, map_robot_ids, 10:13] = 0.0 # Optimized: broadcast assignment
             self.goal_positions[map_id, map_robot_ids] = goal_positions_total[pos_setting_start:pos_setting_end]
             self.curr_goal_index[map_id, map_robot_ids] = 0
-            pos_setting_start = pos_setting_end
+            
             self.terminal_rewards[map_id, map_robot_ids] = 0.0
             self.collisions[map_id, map_robot_ids * self.robot_num_bodies] = 0
+            
+            pos_setting_start = pos_setting_end
             
         self.curr_goal_positions[maps_ids, robot_ids, :] = self.goal_positions[maps_ids, robot_ids, 0, :]
 
@@ -716,7 +665,6 @@ class MAVRLTask(BaseTask):
 
     def reset_obstacles(self, if_easy_start=False):
         asset_pose_tensor = self.env_asset_manager.poission_sample_obstacles(if_easy_start=if_easy_start)
-        # print("asset_pose_tensor: ", asset_pose_tensor)
         if self.env_asset_root_states is not None:
             self.env_asset_root_states[:, :, 0:3] = asset_pose_tensor[:, :, 0:3]
             euler_angles = asset_pose_tensor[:, :, 3:6]
@@ -737,7 +685,7 @@ class MAVRLTask(BaseTask):
 
     def physics_renders(self):
         self.gym.simulate(self.sim)
-        self.gym.fetch_results(self.sim, True) # use only when device is not "cpu"
+        self.gym.fetch_results(self.sim, True) 
         self.post_physics_step()
         self.check_collisions()
 
@@ -761,28 +709,10 @@ class MAVRLTask(BaseTask):
         sampling_dis_per_step = self.cfg.logging.sampling_step
         lower_bound = self.cfg.logging.lower_bound
         upper_bound = self.cfg.logging.upper_bound
-        # sampling_dis_per_step_th = sampling_dis_per_step * torch.ones(self.num_maps, self.num_robots_per_map, 3, device=self.device, requires_grad=False)
-        # sampling_steps = torch.floor((self.env_upper_bound - self.env_lower_bound) / sampling_dis_per_step)
-        # print("sampling_steps: ", sampling_steps.shape)
-        # print("sampling_dis_per_step_th: ", sampling_dis_per_step_th.shape)
-        x_range = torch.arange(
-            lower_bound[0],
-            upper_bound[0],
-            sampling_dis_per_step[0],
-            device=self.device
-        )
-        y_range = torch.arange(
-            lower_bound[1],
-            upper_bound[1],
-            sampling_dis_per_step[1],
-            device=self.device
-        )
-        z_range = torch.arange(
-            lower_bound[2],
-            upper_bound[2],
-            sampling_dis_per_step[2],
-            device=self.device
-        )
+        
+        x_range = torch.arange(lower_bound[0], upper_bound[0], sampling_dis_per_step[0], device=self.device)
+        y_range = torch.arange(lower_bound[1], upper_bound[1], sampling_dis_per_step[1], device=self.device)
+        z_range = torch.arange(lower_bound[2], upper_bound[2], sampling_dis_per_step[2], device=self.device)
         step_count = 0
         for x in x_range:
             for y in y_range:
@@ -796,7 +726,6 @@ class MAVRLTask(BaseTask):
                     self.render(sync_frame_time=True)
                     self.render_pcd_cameras(step_count)
                     step_count += 1
-        # torch.save(self.log_data_dict["pcd"], './log_data.pth')
         return True
 
     def step(self, actions):
@@ -839,17 +768,20 @@ class MAVRLTask(BaseTask):
                 
         finish_curr_goal = torch.where(torch.norm(self.curr_goal_positions - self.root_positions, dim=2) < self.goal_threshold, self.ones_int, self.zeros_int)
         self.curr_goal_index += finish_curr_goal
-        self.curr_goal_positions = torch.gather(self.goal_positions, 2, self.curr_goal_index.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, 1, 3)).squeeze(2)
+        
+        # Helper indexer for gathering goals
+        indexer = self.curr_goal_index.unsqueeze(-1).unsqueeze(-1).expand(-1, -1, 1, 3)
+        self.curr_goal_positions = torch.gather(self.goal_positions, 2, indexer).squeeze(2)
+        
         self.successes[:] = torch.where(self.curr_goal_index >= self.cfg.env.goal_num_per_episode, self.ones, self.zeros)
-        # print("self.curr_goal_index: ", self.curr_goal_index)
-        # print("self.successes: ", self.successes)
+        
         _out_of_bounds = torch.where((self.root_positions < self.flight_lower_bound) | (self.root_positions > self.flight_upper_bound), self.ones_3d, self.zeros_3d)
         self.out_of_bounds = torch.where(torch.sum(_out_of_bounds, dim=2) > 0, self.ones, self.zeros)
             
         self.compute_resets()
         reset_env_ids = self.reset_buf.nonzero(as_tuple=False).squeeze(-1)
         _terminal_rewards = self.terminal_rewards.view(-1).clone().detach()
-        # if not self.save_control_data:
+
         self.reset_idx(reset_env_ids, if_reset_obstacles=False)
         self.compute_vehicle_frame_states()
         self.get_obs()
@@ -886,6 +818,7 @@ class MAVRLTask(BaseTask):
     def get_obs(self):
         self.state_observations = self.compute_state_observations()
         obs_image = torch.clamp(self.full_camera_array, self.sensor_params.min_range, self.sensor_params.max_range)
+        # Optimized: Scale using scalar math instead of full tensor arithmetic if possible, though float conv happens anyway
         obs_image = (obs_image - self.sensor_params.min_range) / (self.sensor_params.max_range - self.sensor_params.min_range) * 255.0
 
         self.obs_dict['image'] = obs_image.unsqueeze(1).to(torch.uint8)
@@ -898,27 +831,38 @@ class MAVRLTask(BaseTask):
 
     def compute_state_observations(self):
         goal_dir = self.curr_goal_positions - self.root_positions
-        log_distance = torch.log(torch.norm(goal_dir[:, :, :2], dim=2) + 1.0)
+        # Optimization: Calculate norm once
+        goal_dist = torch.norm(goal_dir, dim=2)
+        goal_dist_2d = torch.norm(goal_dir[:, :, :2], dim=2)
+        
+        log_distance = torch.log(goal_dist_2d + 1.0)
+        
         horizon_vel_ = torch.norm(self.linvels_body_frame[:, :, :2], dim=2)
-        # chi = torch.atan2(self.linvels_body_frame[:, :, 1], self.linvels_body_frame[:, :, 0])
         perception = torch.abs(self.linvels_body_frame[:, :, 1]) + torch.where(self.linvels_body_frame[:, :, 0] < 0, -self.linvels_body_frame[:, :, 0], self.zeros)
-        # beta = torch.atan2(goal_dir[:, :, 1], goal_dir[:, :, 0])
-        normalized_goal_dir = goal_dir / (torch.norm(goal_dir, dim=2).unsqueeze(-1) + 1e-6)
-        normalized_vel_dir = self.root_linvels_obs / (torch.norm(self.root_linvels_obs, dim=2).unsqueeze(-1) + 1e-6)
+        
+        # Optimized normalization: add epsilon inside division or use pre-calculated norm with eps
+        inv_goal_norm = 1.0 / (goal_dist.unsqueeze(-1) + 1e-6)
+        normalized_goal_dir = goal_dir * inv_goal_norm
+        
+        vel_norm = torch.norm(self.root_linvels_obs, dim=2)
+        inv_vel_norm = 1.0 / (vel_norm.unsqueeze(-1) + 1e-6)
+        normalized_vel_dir = self.root_linvels_obs * inv_vel_norm
         
         goal_penalty = self.cfg.RLParamsCfg.distance_coeff * log_distance
         speed_penalty = torch.where(horizon_vel_ > self.cfg.RLParamsCfg.start_penalty_vel, self.cfg.RLParamsCfg.vel_coeff * horizon_vel_, self.zeros)
         vertical_penalty = self.cfg.RLParamsCfg.vert_coeff * (torch.abs(goal_dir[:, :, 2]) + 0.8*torch.abs(self.linvels_vehicle_frame[:, :, 2]))
-        # vertical_penalty = 0.5 * self.cfg.RLParamsCfg.vert_coeff * torch.abs(self.linvels_body_frame[:, :, 2])
-        # angular_penalty = self.cfg.RLParamsCfg.angular_vel_coeff * torch.abs(chi + self.vehicle_frame_euler_angles[:, :, 2] - beta)
-        angular_penalty = self.cfg.RLParamsCfg.angular_vel_coeff * (torch.abs(normalized_goal_dir[:, :, 0] - normalized_vel_dir[:, :, 0]) + 
-                                                                    torch.abs(normalized_goal_dir[:, :, 1] - normalized_vel_dir[:, :, 1]) +
-                                                                    torch.abs(normalized_goal_dir[:, :, 2] - normalized_vel_dir[:, :, 2]))
+        
+        # Optimization: abs diff sum
+        angular_penalty = self.cfg.RLParamsCfg.angular_vel_coeff * torch.sum(torch.abs(normalized_goal_dir - normalized_vel_dir), dim=2)
+
         input_penalty = self.cfg.RLParamsCfg.input_coeff * torch.norm(self.angvels_body_frame, dim=2)
-        # yaw_penalty = self.cfg.RLParamsCfg.yaw_coeff * torch.abs(chi)
         yaw_penalty = self.cfg.RLParamsCfg.yaw_coeff * perception
+        
         total_penalty = goal_penalty + speed_penalty + vertical_penalty + angular_penalty + input_penalty + yaw_penalty
+        
+        # Optimization: View directly instead of stack then view if possible, but stack is needed here for different components
         self.rew_buf = torch.stack([goal_penalty, speed_penalty, vertical_penalty, angular_penalty, input_penalty, yaw_penalty, total_penalty], dim=2).view(self.num_envs, -1)
+        
         return torch.stack([log_distance, self.root_positions[:, :, 2], normalized_goal_dir[:, :, 0], normalized_goal_dir[:, :, 1], normalized_goal_dir[:, :, 2], 
                             self.root_linvels_obs[:, :, 0], self.root_linvels_obs[:, :, 1], self.root_linvels_obs[:, :, 2],
                             self.angvels_body_frame[:, :, 0], self.angvels_body_frame[:, :, 1], self.angvels_body_frame[:, :, 2],
@@ -951,29 +895,36 @@ class MAVRLTask(BaseTask):
 
     def compute_resets(self):
         self.reset_buf[:] = 0
+        
         # terminate for timeout
-        self.reset_buf[self.progress_buf >= self.cfg.env.max_episode_length] = 1
-        self.terminal_rewards[self.progress_buf.view(self.num_maps, self.num_robots_per_map,) >= self.cfg.env.max_episode_length] = self.cfg.RLParamsCfg.r_timeout
-        # self.total_trials[self.progress_buf >= self.cfg.env.max_episode_length] += 1
+        # Optimization: use pre-calculated boolean masks to avoid repeated comparisons if possible, but minimal gain here.
+        timeout_mask = self.progress_buf >= self.cfg.env.max_episode_length
+        self.reset_buf[timeout_mask] = 1
+        
+        # Optimization: avoid view() calls inside indexing if shapes match, or use cached views
+        self.terminal_rewards[timeout_mask.view(self.num_maps, self.num_robots_per_map)] = self.cfg.RLParamsCfg.r_timeout
+
         # terminate for collision
         robot_body_ids = torch.arange(self.num_robots_per_map, device=self.device)*self.robot_num_bodies
         collision_robots = self.collisions[:, robot_body_ids].view(self.num_envs,)
-        self.reset_buf[collision_robots > 0] = 1
-        self.terminal_rewards[collision_robots.view(self.num_maps, self.num_robots_per_map,) > 0] = self.cfg.RLParamsCfg.r_collision
-        # self.total_trials[collision_robots > 0] += 1
+        
+        collision_mask = collision_robots > 0
+        self.reset_buf[collision_mask] = 1
+        self.terminal_rewards[collision_robots.view(self.num_maps, self.num_robots_per_map) > 0] = self.cfg.RLParamsCfg.r_collision
+        
         # terminate for reaching goal
-        self.reset_buf[self.successes.view(self.num_envs,) > 0] = 1
+        success_mask = self.successes.view(self.num_envs,) > 0
+        self.reset_buf[success_mask] = 1
         self.terminal_rewards[self.successes > 0] = self.cfg.RLParamsCfg.r_arrive
-        # self.total_trials[self.successes.view(self.num_envs,) > 0] += 1
-        self.success_trials[self.successes.view(self.num_envs,) > 0] += 1
+        self.success_trials[success_mask] += 1
+        
         # terminate for out of bounds
-        self.reset_buf[self.out_of_bounds.view(self.num_envs,) > 0] = 1
+        oob_mask = self.out_of_bounds.view(self.num_envs,) > 0
+        self.reset_buf[oob_mask] = 1
         self.terminal_rewards[self.out_of_bounds > 0] = self.cfg.RLParamsCfg.r_exceed
-        # self.total_trials[self.out_of_bounds.view(self.num_envs,) > 0] += 1
-        reset_ids = ((self.progress_buf >= self.cfg.env.max_episode_length) | 
-                                                     (collision_robots > 0) | 
-                                  (self.successes.view(self.num_envs,) > 0) | 
-                                  (self.out_of_bounds.view(self.num_envs,) > 0))
+        
+        # Stats update
+        reset_ids = timeout_mask | collision_mask | success_mask | oob_mask
         countable_reset_ids = reset_ids & (self.progress_buf > 1)
         self.total_trials[reset_ids] += 1
         self.available_total_trials[countable_reset_ids] += 1
@@ -1001,7 +952,6 @@ class MAVRLTask(BaseTask):
         self.gym.start_access_image_tensors(self.sim)
         pcd_depth = self.pcd_cameras.get_pcd_camera_data()
         self.gym.end_access_image_tensors(self.sim)
-        # save pcd depth to pth
         self.log_data_dict["pcd"]['pos'].append(self.root_positions.cpu())
         self.log_data_dict["pcd"]['quat'].append(self.root_quats.cpu())
         self.log_data_dict["pcd"]['depth'].append(pcd_depth.cpu())
@@ -1025,6 +975,7 @@ class MAVRLTask(BaseTask):
             self.action_input[:, 1] = 0
             self.action_input[:, 2] = self.max_speed * (actions[:, 0]+1)*torch.sin(self.max_inclination_angle*actions[:, 1])/2.0
             self.action_input[:, 3] = self.max_yawrate*actions[:, 2]
+            # Debug check preserved
             if torch.any(self.action_input[:, 0] < 0):
                 print("Negative vx: ", torch.count(self.action_input[:, 0] < 0).item())
         else:
@@ -1036,24 +987,20 @@ class MAVRLTask(BaseTask):
     def pre_physics_step(self, _actions, duration):
         actions = _actions.to(self.device)
         actions = torch.clamp(actions, -1.0, 1.0)
-        # actions[:] = self.apply_action_noise(actions)
+        
         if self.cfg.control.controller == 'lee_acceleration_control':
             self.action_acc_bounding(actions)
         elif self.cfg.control.controller == 'lee_velocity_control':
             self.action_mixer(actions)
-        # print("Actions: ", self.action_input)
-        # clear actions for reset envs
+        
         if self.save_control_data:
-            # state_np = self.root_states[0, :, :].cpu().numpy()
             pos_np = self.root_positions[0, :, :3].cpu().numpy()
             euler_np = self.root_euler_angles[0, :, :].cpu().numpy()
             vel_np = self.root_linvels_obs[0, :, :].cpu().numpy()
             angvel_np = self.angvels_body_frame[0, :, :].cpu().numpy()
             state_np = np.concatenate((pos_np, euler_np, vel_np, angvel_np), axis=1)
             actions_np = self.action_input[:self.num_robots_per_map].cpu().numpy()
-            # save states
             np.savetxt(self.states_file, state_np, delimiter=' ' , fmt='%1.4f')
-            # save actions
             np.savetxt(self.actions_file, actions_np, delimiter=' ' , fmt='%2.6f')
         
         if self.enable_pc_loader:
@@ -1084,16 +1031,11 @@ class MAVRLTask(BaseTask):
         robot_body_ids = torch.arange(self.num_robots_per_map, device=self.device)*self.robot_num_bodies
         self.forces[:, robot_body_ids, 2] = self.robot_mass * thrust_command.reshape(self.num_maps, self.num_robots_per_map)
 
-        # print("Thrusts: ", self.forces[0, robot_body_ids, 2])
         self.torques[:, robot_body_ids] = output_torques_inertia_normalized.reshape(self.num_maps, self.num_robots_per_map, 3)
-        # negative thrusts should be clipped to 0
         self.forces = torch.where(self.forces < 0, torch.zeros_like(self.forces), self.forces)
 
-        ## TODO: @mihirk284 perturbations are only being added to the thrust. There are no perturbations on the lateral forces. 
-        # Need to add perturbations to the lateral forces as well.
         self.sample_noise_per_physics_step(self.forces[:, robot_body_ids], self.torques[:, robot_body_ids])
-        # print("Extra force disturbance: ", self.extra_force_disturbance)
-        # print("force_noise disturbance: ", self.force_noise)
+        
         apply_disturbance_per_env = self.env_disturbance_application_sampler.sample().unsqueeze(2)
         self.forces[:, robot_body_ids] += (apply_disturbance_per_env * (self.force_noise + self.extra_force_disturbance))
         self.torques[:, robot_body_ids] += (apply_disturbance_per_env * (self.torque_noise + self.extra_torque_disturbance))
@@ -1103,13 +1045,9 @@ class MAVRLTask(BaseTask):
             force_np = force_np.reshape(-1, 1)
             torque_np = self.torques[0, robot_body_ids].cpu().numpy()
             angvel_err_np = angvel_err[:self.num_robots_per_map].cpu().numpy()
-            # concatenate forces and torques
             control_np = np.concatenate((force_np, torque_np, angvel_err_np), axis=1)
-            # print("Control: ", control_np)
             np.savetxt(self.control_file, control_np, delimiter=' ' , fmt='%2.8f')
-        # forces = torch.cat([self.forces.view(self.num_envs*self.robot_num_bodies, 3), self.assets_forces], dim=0)
-        # torques = torch.cat([self.torques.view(self.num_envs*self.robot_num_bodies, 3), self.assets_torques], dim=0)
-        # apply actions
+        
         self.gym.apply_rigid_body_force_tensors(self.sim, gymtorch.unwrap_tensor(self.forces), gymtorch.unwrap_tensor(self.torques), gymapi.LOCAL_SPACE)
 
     def sample_noise_per_physics_step(self, forces, torques):
@@ -1129,16 +1067,9 @@ class MAVRLTask(BaseTask):
 
     def check_collisions(self):
         self.collisions[:] = torch.where(torch.norm(self.contact_forces, dim=2) > 0.1, self.ones_bodied, self.collisions)
-        # f = self.contact_forces.nonzero(as_tuple=False)
-        # if f.shape[0] > 0:
-        #     print("Contact forces: ", f)
 
     def reset_reward_coeffs(self):
-        # self.cfg.RLParamsCfg.distance_coeff = 1.0
-        # self.cfg.RLParamsCfg.vel_coeff = 0.1
-        # self.cfg.RLParamsCfg.vert_coeff = 0.1
         self.cfg.RLParamsCfg.angular_vel_coeff = 0.0
-        # self.cfg.RLParamsCfg.input_coeff = 0.1
         self.cfg.RLParamsCfg.yaw_coeff = 0.0
 
     def getRewardNames(self):
@@ -1170,7 +1101,6 @@ class MAVRLTask(BaseTask):
     
     def _init_log_data_dict(self):
         data_keys = [
-            # pre physics
             "env_step",
             "episode_id",
             "main_depth",
@@ -1223,4 +1153,3 @@ def torch_rand_float_tensor(lower, upper):
 def ssa(a: torch.Tensor) -> torch.Tensor:
     '''Smallest signed angle'''
     return torch.remainder(a+np.pi,2*np.pi) - np.pi
-

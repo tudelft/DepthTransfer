@@ -62,11 +62,11 @@ class ZooTaskCfg(BaseConfig):
         use_kl_latent_loss = False
 
     class FeasibilityCfg(BaseConfig):
-        stabilization_attitude_ref_omega = [5.5, 5.5, 2.5]
-        stabilization_attitude_ref_zeta = [3.8, 3.8, 3.2]
-        stabilization_attitude_ref_max = [5.2, 5.2, 3.1]
-        stabilization_attitude_ref_max_omege_dot = [5.2, 5.2, 2.8]
-        stabilization_thrust_rate = 10.0
+        stabilization_attitude_ref_omega = [16.0, 16.0, 8.5]
+        stabilization_attitude_ref_zeta = [8.0, 8.0, 6.0]
+        stabilization_attitude_ref_max = [25.2, 25.2, 10.1]
+        stabilization_attitude_ref_max_omege_dot = [20.2, 20.2, 10.8]
+        stabilization_thrust_rate = 20.0
 
     class RLParamsCfg(BaseConfig):
         distance_coeff = -0.003

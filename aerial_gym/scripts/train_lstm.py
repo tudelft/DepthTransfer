@@ -34,7 +34,6 @@ def main():
         {"name": "--rollouts", "type": int, "default": 1000, "help": "Number of rollouts"},
         {"name": "--dir", "type": str, "default": "../saved/dataset_outdoor_env", "help": "Where to place rollouts"},
         {"name": "--lstm_exp", "type": str, "default": "LSTM", "help": "Directory where results are logged"},
-        # {"name": "--recon", "nargs": '+', "type": int, "default": "[0, 0, 1]", "help": "Recurrent model"},
     ]
     recon = [1, 1, 0]
     args = get_args(add_args)
