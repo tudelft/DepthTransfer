@@ -24,6 +24,7 @@ Input_height = 224
 
 def parser():
     parser = argparse.ArgumentParser(description='VAE Trainer')
+    parser.add_argument("--dataset", type=str, default="outdoor_env", help="Dataset directory")
     parser.add_argument('--batch-size', type=int, default=32, metavar='N',
                         help='input batch size for training (default: 32)')
     parser.add_argument('--epochs', type=int, default=300, metavar='N',
@@ -31,14 +32,9 @@ def parser():
     parser.add_argument('--logdir', type=str, default='../exp_vae_320', help='Directory where results are logged')
     parser.add_argument('--noreload', action='store_true',
                         help='Best model is not reloaded if specified')
-    parser.add_argument('--nosamples', action='store_true',
-                        help='Does not save samples during training if specified')
-    parser.add_argument("--trial", type=int, default=1, help="PPO trial number")
-    parser.add_argument("--iter", type=int, default=100, help="PPO iter number")
     parser.add_argument("--test_only", type=bool, default=False, help="Test only")
     parser.add_argument("--use_kl_loss", type=bool, default=True, help="Use kl loss")
     parser.add_argument("--use_max_pooling", type=bool, default=True, help="Use max pooling")
-    parser.add_argument("--zoo_task", type=bool, default=False, help="zoo task")
     parser.add_argument("--refine_stereo_depth", type=bool, default=False, help="refine stereo depth")
     return parser
 
@@ -57,29 +53,12 @@ class AttentionAutoEncoderDepth:
             transforms.Resize((Input_height, Input_width)),
             transforms.ToTensor(),
         ])
-        if args.zoo_task:
-            if args.refine_stereo_depth:
-                self.dataset_train = _RolloutDataset('../saved/zoo_dataset_stereo_new',
-                                                    self.transform_train, device=device, train=True)
-                self.dataset_test = _RolloutDataset('../saved/zoo_dataset_stereo_new',
-                                                    self.transform_test, device=device, train=False)
-            else:
-                self.dataset_train = _RolloutDataset('../saved/zoo_dataset_depth_new',
-                                                    self.transform_train, device=device, train=True)
-                self.dataset_test = _RolloutDataset('../saved/zoo_dataset_depth_new',
-                                                    self.transform_test, device=device, train=False)
-            
-        else:
-            if args.refine_stereo_depth:
-                self.dataset_train = _RolloutDataset('../saved/dataset_outdoor_stereo_new',
-                                                        self.transform_train, device=device, train=True)
-                self.dataset_test = _RolloutDataset('../saved/dataset_outdoor_stereo_new',
-                                                        self.transform_test, device=device, train=False)
-            else:
-                self.dataset_train = _RolloutDataset('../saved/dataset_outdoor_env',
-                                                        self.transform_train, device=device, train=True)
-                self.dataset_test = _RolloutDataset('../saved/dataset_outdoor_env',
-                                                        self.transform_test, device=device, train=False)
+
+        self.dataset_train = _RolloutDataset(args.dataset,
+                                                self.transform_train, device=device, train=True)
+        self.dataset_test = _RolloutDataset(args.dataset,
+                                                self.transform_test, device=device, train=False)
+
         self.train_loader = torch.utils.data.DataLoader(
             self.dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=16)
         self.test_loader = torch.utils.data.DataLoader(
@@ -93,13 +72,12 @@ class AttentionAutoEncoderDepth:
 
         self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=100, gamma=0.5)
 
-        self.avae_dir = join(args.logdir, 'vae_resnet_16ch_zoo_refined')
+        self.avae_dir = join(args.logdir, 'vae_resnet_outdoor')
         if not exists(self.avae_dir):
             mkdir(self.avae_dir)
             mkdir(join(self.avae_dir, 'samples'))
 
-        
-        self.reload_file = join(join(args.logdir, 'vae_resnet_16ch_zoo'), 'checkpoint.tar')
+        self.reload_file = join(join(args.logdir, 'vae_resnet_outdoor'), 'checkpoint.tar')
         if not args.noreload and exists(self.reload_file):
             state = torch.load(self.reload_file)
             self.model.load_state_dict(state['state_dict'])

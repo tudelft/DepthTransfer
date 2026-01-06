@@ -124,6 +124,8 @@ class RecurrentPPO(OnPolicyAlgorithm):
         control_policy: Optional[Dict[str, Any]] = None,
         save_encoder: bool = False,
         use_kl_latent_loss: bool = False,
+        observation_space: Optional[spaces.Space] = None,
+        action_space: Optional[spaces.Space] = None,
     ):
         super().__init__(
             policy,
@@ -150,6 +152,10 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 spaces.MultiBinary,
             ),
         )
+        if env is None and observation_space is not None:
+            self.observation_space = observation_space
+        if env is None and action_space is not None:
+            self.action_space = action_space
 
         self.use_tanh_act = use_tanh_act
         self.batch_size = batch_size
@@ -178,71 +184,19 @@ class RecurrentPPO(OnPolicyAlgorithm):
         self.control_policy = control_policy
         self.save_encoder = save_encoder
         self.use_kl_latent_loss = use_kl_latent_loss
+        self.lstm_weight_saved_path = lstm_weight_saved_path
 
         if self.retrain:
             self.policy = policy
-            if self.state_vae is not None:
-                pretrained_cnn = {
-                    'features_extractor.conv1.weight': self.state_vae['state_dict']['encoder.conv1.weight'],
-                    'features_extractor.conv1.bias': self.state_vae['state_dict']['encoder.conv1.bias'],
-                    'features_extractor.conv2.weight': self.state_vae['state_dict']['encoder.conv2.weight'],
-                    'features_extractor.conv2.bias': self.state_vae['state_dict']['encoder.conv2.bias'],
-                    'features_extractor.conv3.weight': self.state_vae['state_dict']['encoder.conv3.weight'],
-                    'features_extractor.conv3.bias': self.state_vae['state_dict']['encoder.conv3.bias'],
-                    'features_extractor.conv4.weight': self.state_vae['state_dict']['encoder.conv4.weight'],
-                    'features_extractor.conv4.bias': self.state_vae['state_dict']['encoder.conv4.bias'],
-                    'features_extractor.conv5.weight': self.state_vae['state_dict']['encoder.conv5.weight'],
-                    'features_extractor.conv5.bias': self.state_vae['state_dict']['encoder.conv5.bias'],
-                    'features_extractor.conv6.weight': self.state_vae['state_dict']['encoder.conv6.weight'],
-                    'features_extractor.conv6.bias': self.state_vae['state_dict']['encoder.conv6.bias'],
-                    'features_extractor.linear.weight': self.state_vae['state_dict']['encoder.fc_mu.weight'],
-                    'features_extractor.linear.bias': self.state_vae['state_dict']['encoder.fc_mu.bias'],
-                    'features_extractor.fc_logsigma.weight': self.state_vae['state_dict']['encoder.fc_logsigma.weight'],
-                    'features_extractor.fc_logsigma.bias': self.state_vae['state_dict']['encoder.fc_logsigma.bias'],
-                }
-                self.policy.load_state_dict(pretrained_cnn, strict=False)
-            elif self.control_policy is not None:
+            if self.control_policy is not None:
                 self.policy.load_state_dict(self.control_policy, strict=False)
-
             self.policy = self.policy.to(self.device)
-
-        if self.train_lstm_without_env:
-            self.dataset_train = RolloutLSTMSequenceDataset(self.lstm_dataset_path, self.device, train=True)
-            self.dataset_test = RolloutLSTMSequenceDataset(self.lstm_dataset_path, self.device, train=False)
-            self.train_loader = torch.utils.data.DataLoader(
-                self.dataset_train, batch_size=1, shuffle=False, num_workers=0)
-            self.test_loader = torch.utils.data.DataLoader(
-                self.dataset_test, batch_size=1, shuffle=False, num_workers=0)
-            self.n_envs = 1
-            self._setup_lr_schedule()
-            self.set_random_seed(self.seed)
-            lstm_logger = utils.configure_logger(self.verbose, self.tensorboard_log, lstm_weight_saved_path, False)
-            self.set_logger(lstm_logger)
-            
-        # elif self.fine_tune_from_rosbag:
-        #     self.dataset_train = RosbagSequenceDataset('real_imgs', '/camera/depth/image_rect_raw', transform=None, train=True)
-        #     self.dataset_test  = RosbagSequenceDataset('real_imgs', '/camera/depth/image_rect_raw', transform=None, train=False)
-        #     self.train_loader = torch.utils.data.DataLoader(
-        #         self.dataset_train, batch_size=1, shuffle=False, num_workers=0)
-        #     self.test_loader = torch.utils.data.DataLoader(
-        #         self.dataset_test, batch_size=1, shuffle=False, num_workers=0)
-        #     self.n_envs = 1
-        #     self._setup_lr_schedule()
-        #     self.set_random_seed(self.seed)
-        #     lstm_logger = utils.configure_logger(self.verbose, self.tensorboard_log, lstm_weight_saved_path, False)
-        #     self.set_logger(lstm_logger)
-        else:
-            if _init_setup_model:
-                self._setup_model()
+        if _init_setup_model:
+            self._setup_model()
 
     def _setup_model(self) -> None:
         self._setup_lr_schedule()
         self.set_random_seed(self.seed)
-
-        if self.only_lstm_training:
-            buffer_cls = LSTMThDictRolloutBuffer
-        else:
-            buffer_cls = LatentRolloutBuffer
 
         if not self.retrain:
             self.policy = self.policy_class(
@@ -304,6 +258,54 @@ class RecurrentPPO(OnPolicyAlgorithm):
         else:
             lstm = self.policy.lstm_mean
 
+        if self.train_lstm_without_env:
+            self.dataset_train = RolloutLSTMSequenceDataset(self.lstm_dataset_path, self.device, train=True)
+            self.dataset_test = RolloutLSTMSequenceDataset(self.lstm_dataset_path, self.device, train=False)
+            self.train_loader = torch.utils.data.DataLoader(
+                self.dataset_train, batch_size=1, shuffle=False, num_workers=0)
+            self.test_loader = torch.utils.data.DataLoader(
+                self.dataset_test, batch_size=1, shuffle=False, num_workers=0)
+            self.n_envs = 1
+            lstm_logger = utils.configure_logger(self.verbose, self.tensorboard_log, self.lstm_weight_saved_path, False)
+            self.set_logger(lstm_logger)
+        # elif self.fine_tune_from_rosbag:
+        #     self.dataset_train = RosbagSequenceDataset('real_imgs', '/camera/depth/image_rect_raw', transform=None, train=True)
+        #     self.dataset_test  = RosbagSequenceDataset('real_imgs', '/camera/depth/image_rect_raw', transform=None, train=False)
+        #     self.train_loader = torch.utils.data.DataLoader(
+        #         self.dataset_train, batch_size=1, shuffle=False, num_workers=0)
+        #     self.test_loader = torch.utils.data.DataLoader(
+        #         self.dataset_test, batch_size=1, shuffle=False, num_workers=0)
+        #     self.n_envs = 1
+        elif self.only_lstm_training:
+            hidden_state_buffer_shape = (self.n_steps, lstm.num_layers, self.n_envs, lstm.hidden_size)
+            buffer_cls = LSTMThDictRolloutBuffer
+            self.rollout_buffer = buffer_cls(
+                self.n_steps,
+                self.observation_space,
+                self.action_space,
+                hidden_state_buffer_shape,
+                self.device,
+                gamma=self.gamma,
+                gae_lambda=self.gae_lambda,
+                n_envs=self.n_envs,
+                n_seq=self.n_seq,
+            )
+        else:
+            hidden_state_buffer_shape = (self.n_steps, lstm.num_layers, self.n_envs, lstm.hidden_size)
+            buffer_cls = LatentRolloutBuffer
+            self.rollout_buffer = buffer_cls(
+                self.n_steps,
+                self.observation_space,
+                self.action_space,
+                hidden_state_buffer_shape,
+                self.device,
+                gamma=self.gamma,
+                gae_lambda=self.gae_lambda,
+                n_envs=self.n_envs,
+                n_seq=self.n_seq,
+                ppo_input_size=lstm.hidden_size + 14,
+            )
+
         single_hidden_state_shape = (lstm.num_layers, self.n_envs, lstm.hidden_size)
         # hidden and cell states for actor and critic
         self._last_lstm_states = RNNStates(
@@ -328,33 +330,6 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 ),
             )
 
-        hidden_state_buffer_shape = (self.n_steps, lstm.num_layers, self.n_envs, lstm.hidden_size)
-        
-        if self.only_lstm_training:
-            self.rollout_buffer = buffer_cls(
-                self.n_steps,
-                self.observation_space,
-                self.action_space,
-                hidden_state_buffer_shape,
-                self.device,
-                gamma=self.gamma,
-                gae_lambda=self.gae_lambda,
-                n_envs=self.n_envs,
-                n_seq=self.n_seq,
-            )
-        else:
-            self.rollout_buffer = buffer_cls(
-                self.n_steps,
-                self.observation_space,
-                self.action_space,
-                hidden_state_buffer_shape,
-                self.device,
-                gamma=self.gamma,
-                gae_lambda=self.gae_lambda,
-                n_envs=self.n_envs,
-                n_seq=self.n_seq,
-                ppo_input_size=lstm.hidden_size + 14,
-            )
 
         # Initialize schedules for policy/value clipping
         self.clip_range = get_schedule_fn(self.clip_range)
@@ -423,21 +398,7 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 # Convert to pytorch tensor or to TensorDict
                 obs_tensor = self._last_obs
                 episode_starts = self._last_episode_starts
-                # print("obs_tensor shape: ", obs_tensor[0, 0, 0, :70].max(), obs_tensor[0, 0, 0, :70].min())
-                # print("obs_tensor shape: ", obs_tensor[0, 0, 1, :70].max(), obs_tensor[0, 0, 1, :70].min())
                 latent_pi, latent_vf, lstm_states, lstm_states_std = self.policy.forward_rnn_latent_kl_latent(obs_tensor, lstm_states, lstm_states_std, episode_starts)
-                # recons = self.policy.predict_img(latent_pi[:1, :256])
-                # if (recons[1] is not None) and (recons[0] is not None):
-                #     # imgs = np.hstack([np.clip((recons[0].reshape([224, 320, 1]) * 255), 0, 255).astype(np.uint8), 
-                #     #                   np.clip((recons[1].reshape([224, 320, 1]) * 255), 0, 255).astype(np.uint8)])
-                #     imgs = np.hstack([(recons[0].reshape([224, 320, 1]) * 255).astype(np.uint8), 
-                #                       (recons[1].reshape([224, 320, 1]) * 255).astype(np.uint8)])
-                #     cv2.imshow("recon", imgs)
-                #     cv2.waitKey(1)
-                # elif (recons[1] is not None):
-                #     imgs = (recons[1].reshape([224, 320, 1]) * 255).astype(np.uint8)
-                #     cv2.imshow("recon", imgs)
-                #     cv2.waitKey(1)
                 actions, values, log_probs = self.policy.forward(latent_pi, latent_vf, deterministic=deterministic)
             # Rescale and perform action
             # Clip the actions to avoid out of bound error
@@ -447,7 +408,6 @@ class RecurrentPPO(OnPolicyAlgorithm):
             clipped_actions = th.tensor(actions_np, device=self.device, dtype=th.float32)
             new_obs, rewards, dones, infos = env.step(clipped_actions)
             self.num_timesteps += env.num_envs
-            # print("render time: ", time.time() - t0)
             # Give access to local variables
             callback.update_locals(locals())
             if callback.on_step() is False:
@@ -545,19 +505,8 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 # Convert to pytorch tensor or to TensorDict
                 obs_tensor = self._last_obs
                 episode_starts = self._last_episode_starts
-                # print("obs_tensor shape: ", obs_tensor[0, 0, :70].max(), obs_tensor[0, 0, :70].min())
                 latent_pi, latent_vf, lstm_states = self.policy.forward_rnn_latent(obs_tensor, lstm_states, episode_starts)
-                # recons = self.policy.predict_img(latent_vf[:1, :256])
-                # # print(recons[1].max(), recons[1].min())
-                # if (recons[1] is not None) and (recons[0] is not None):
-                #     imgs = np.hstack([np.clip((recons[0].reshape([224, 320, 1]) * 255), 0, 255).astype(np.uint8), 
-                #                       np.clip((recons[1].reshape([224, 320, 1]) * 255), 0, 255).astype(np.uint8)])
-                #     cv2.imshow("recon", imgs)
-                #     cv2.waitKey(1)
-                # elif (recons[1] is not None):
-                #     imgs = (recons[1].reshape([224, 320, 1]) * 255).astype(np.uint8)
-                #     cv2.imshow("recon", imgs)
-                #     cv2.waitKey(1)
+
                 actions, values, log_probs = self.policy.forward(latent_pi, latent_vf, deterministic=deterministic)
             # Rescale and perform action
             # Clip the actions to avoid out of bound error
@@ -567,7 +516,6 @@ class RecurrentPPO(OnPolicyAlgorithm):
             clipped_actions = th.tensor(actions_np, device=self.device, dtype=th.float32)
             new_obs, rewards, dones, infos = env.step(clipped_actions)
             self.num_timesteps += env.num_envs
-            # print("render time: ", time.time() - t0)
             # Give access to local variables
             callback.update_locals(locals())
             if callback.on_step() is False:
@@ -722,13 +670,6 @@ class RecurrentPPO(OnPolicyAlgorithm):
         clip_fractions = []
 
         continue_training = True
-        # print(self.policy.state_dict()['features_extractor.cnn.0.weight'])
-        # print(self.policy.state_dict()['pi_features_extractor.cnn.0.weight'])
-        # print(self.policy.state_dict()['vf_features_extractor.cnn.0.weight'])
-        # print(self.policy.state_dict()['mlp_extractor.policy_net.0.bias'])
-        # print(self.policy.state_dict()['mlp_extractor.policy_net.2.bias'])
-        # print(self.policy.state_dict()['action_net.0.bias'])
-        # print(self.policy.state_dict()['value_net.bias'])
         # train for n_epochs epochs
         for epoch in range(self.n_epochs):
             approx_kl_divs = []
@@ -741,25 +682,15 @@ class RecurrentPPO(OnPolicyAlgorithm):
                 # Convert mask from float to bool
                 # mask = rollout_data.mask > 1e-8
                 # Re-sample the noise matrix because the log_std has changed
-                # print(self.policy.log_std)
                 if self.use_sde:
                     self.policy.reset_noise(self.batch_size)
 
-                # print("rollout_data.latent_lstm_pi: ", rollout_data.latent_lstm_pi.max(), rollout_data.latent_lstm_pi.min())
-                # print where is the max and min for rollout_data.latent_lstm_pi
-                # indeces_max = th.where(rollout_data.latent_lstm_pi == rollout_data.latent_lstm_pi.max())
-                # print("max: ", indeces_max)
-                # indeces_min = th.where(rollout_data.latent_lstm_pi == rollout_data.latent_lstm_pi.min())
-                # print("min: ", indeces_min)
-                # print("rollout_data.latent_lstm_pi: ", rollout_data.latent_lstm_pi[0, :])
                 values, log_prob, entropy = self.policy.evaluate_actions(
                     rollout_data.latent_lstm_pi,
                     rollout_data.latent_lstm_vf,
                     actions,
                 )
                 values = values.flatten()
-                # print("rollout_data.observations shape: ", rollout_data.observations['image'].shape)
-                # print("rollout_data.lstm_states: ", rollout_data.lstm_states[0][0].shape)
                 # Normalize advantage
                 advantages = rollout_data.advantages
                 if self.normalize_advantage:
@@ -1111,50 +1042,38 @@ class RecurrentPPO(OnPolicyAlgorithm):
     def train_lstm_from_dataset(self, use_log_depth=False):
         # train for n_epochs epochs
         for epoch in range(self.n_epochs):
-            # self.policy.set_training_mode(True)
-            # # Update optimizer learning rate
-            # self._update_learning_rate(self.policy.optimizer)
-            # train_loss = 0
-            # future_loss = 0
-            # self.dataset_train.load_next_buffer()
-            # for batch_idx, data in enumerate(self.train_loader):
+            self.policy.set_training_mode(True)
+            # Update optimizer learning rate
+            self._update_learning_rate(self.policy.optimizer)
+            train_loss = 0
+            future_loss = 0
+            self.dataset_train.load_next_buffer()
+            for batch_idx, data in enumerate(self.train_loader):
 
-            #     n_seq = data[1][0].shape[1]
-            #     observations = {key: obs[0] for (key, obs) in data[0].items()}
-            #     # print("observations: ", observations['image'].shape)
+                n_seq = data[1][0].shape[1]
+                observations = {key: obs[0] for (key, obs) in data[0].items()}
 
-            #     # only train the first n_seq images if your pc don't have enough memory
-            #     # single_hidden_state_shape = self.policy.lstm_hidden_state_shape
-            #     # lstm_states = (
-            #     #     th.zeros(single_hidden_state_shape,  device=self.device),
-            #     #     th.zeros(single_hidden_state_shape,  device=self.device),
-            #     # )
-            #     # episode_starts = th.zeros((1,), dtype=th.float32, device=self.device)
-            #     # img_num = observations['image'].shape[0]
-            #     # observations = {key: obs[0 : int(img_num/n_seq)] for (key, obs) in observations.items()}
-                
-            #     lstm_states = data[1]
-            #     episode_starts = data[2]
-            #     latent_obs = self.policy.to_latent(observations)
-            #     # print("latent_obs: ", latent_obs.shape)
-            #     # print("lstm_states: ", lstm_states[0].shape)
-            #     recon, n_seq, _ = self.policy.predict_lstm(latent_obs, lstm_states, episode_starts)
-            #     loss, record = self.lstm_loss_function(observations, recon, n_seq, epoch, use_log_depth)
-            #     self.policy.optimizer.zero_grad()
-            #     train_loss += loss.item()
-            #     future_loss += record
-            #     loss.backward()
-            #     self.policy.optimizer.step()
-            #     if batch_idx % 20 == 0:
-            #         print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, Loss for Future: {:.6f}'.format(
-            #             epoch, batch_idx * len(data), len(self.train_loader.dataset),
-            #             100. * batch_idx / len(self.train_loader),
-            #             loss.item() / len(data), record / len(data)))
-            # print('====> Epoch: {} Average loss: {:.4f}, Future loss: {:.4}'.format(
-            #     epoch, train_loss / len(self.train_loader.dataset), future_loss / len(self.train_loader.dataset)))
-            # self.logger.record("train/loss", train_loss / len(self.train_loader.dataset))
-            # self.logger.record("train/future_loss", future_loss / len(self.train_loader.dataset))
-            # self.logger.dump(step=epoch)
+                lstm_states = data[1]
+                episode_starts = data[2]
+                latent_obs = self.policy.to_latent(observations)
+
+                recon, n_seq, _ = self.policy.predict_lstm(latent_obs, lstm_states, episode_starts)
+                loss, record = self.lstm_loss_function(observations, recon, n_seq, epoch, use_log_depth)
+                self.policy.optimizer.zero_grad()
+                train_loss += loss.item()
+                future_loss += record
+                loss.backward()
+                self.policy.optimizer.step()
+                if batch_idx % 20 == 0:
+                    print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}, Loss for Future: {:.6f}'.format(
+                        epoch, batch_idx * len(data), len(self.train_loader.dataset),
+                        100. * batch_idx / len(self.train_loader),
+                        loss.item() / len(data), record / len(data)))
+            print('====> Epoch: {} Average loss: {:.4f}, Future loss: {:.4}'.format(
+                epoch, train_loss / len(self.train_loader.dataset), future_loss / len(self.train_loader.dataset)))
+            self.logger.record("train/loss", train_loss / len(self.train_loader.dataset))
+            self.logger.record("train/future_loss", future_loss / len(self.train_loader.dataset))
+            self.logger.dump(step=epoch)
             # test the model and save the model each 50 epochs
             if epoch % 10 == 0:
                 self.test_lstm_from_dataset(epoch, use_log_depth)
@@ -1288,7 +1207,6 @@ class RecurrentPPO(OnPolicyAlgorithm):
             save_path = self.logger.get_dir()
             os.makedirs(save_path, exist_ok=True)
             th.save(rollout_data, save_path + "/rollout_{0:05d}.pth".format(iteration))
-
 
     def lstm_loss_function(self, obs, obs_recon, n_seq, epoch, use_log_depth=False):
         if isinstance(obs, dict):

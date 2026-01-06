@@ -3,6 +3,7 @@ from os.path import join, exists
 import numpy as np
 from gymnasium import spaces
 from isaacgym import gymutil
+from aerial_gym.envs.base.zoo_task_config import ZooTaskCfg
 from aerial_gym.envs.base.mavrl_task_config import MAVRLTaskCfg
 from aerial_gym.utils import get_args, task_registry
 from aerial_gym.mav_baselines.torch.recurrent_ppo.policies import MultiInputLstmPolicy
@@ -26,42 +27,42 @@ def configure_random_seed(seed):
 
 def main():
     add_args = [{"name": "--train", "type": bool, "default": True, "help": "Train the policy or evaluate the policy"},
-        {"name": "--render", "type": bool, "default": True, "help": "Render with Unity"},
         {"name": "--trial", "type": int, "default": 1, "help": "PPO trial number"},
         {"name": "--iter", "type": int, "default": 100, "help": "PPO iter number"},
-        {"name": "--retrain", "type": bool, "default": True, "help": "if retrain"},
-        {"name": "--nocontrol", "type": bool, "default": False, "help": "if load action and value net parameters"},
-        {"name": "--rollouts", "type": int, "default": 1000, "help": "Number of rollouts"},
-        {"name": "--dir", "type": str, "default": "../saved/dataset_outdoor_env", "help": "Where to place rollouts"},
+        {"name": "--retrain", "type": bool, "default": False, "help": "if retrain"},
+        {"name": "--dataset", "type": str, "default": "../saved/dataset_outdoor_gt", "help": "Where to place rollouts"},
         {"name": "--lstm_exp", "type": str, "default": "LSTM", "help": "Directory where results are logged"},
     ]
-    recon = [1, 1, 0]
+    recon = [1, 1, 0] # past, present, future
     args = get_args(add_args)
-    config = MAVRLTaskCfg()
-    # env = mavrl_vec_env_v2.MavrlEnvVecV2(env)
+    if args.task == "mavrl_zoo":
+        env_cfg = ZooTaskCfg()
+    elif args.task == "mavrl_task":
+        env_cfg = MAVRLTaskCfg()
 
     rsg_root = os.path.dirname(os.path.abspath(__file__))
     log_dir = rsg_root + "/../saved"
-    print("log_dir: ", log_dir)
     device = get_device("auto")
 
     vae_logdir = "../exp_vae_320/"
-    if config.LatentSpaceCfg.use_resnet_vae:
-        vae_file = join(vae_logdir, 'vae_resnet_16ch', 'checkpoint.tar')
-    else:
-        vae_file = join(vae_logdir, 'vae', 'best.tar')
+    vae_file = join(vae_logdir, 'vae_resnet_outdoor', 'checkpoint.tar')
     assert exists(vae_file), "No trained VAE in the logdir..."
     state_vae = torch.load(vae_file, map_location=device)
     print("Loading VAE at epoch {} "
         "with test error {}".format(state_vae['epoch'], state_vae['precision']))
     
-    # policy = "MultiInputLstmPolicy"
-    policy_weight = "./../saved/RecurrentPPO_{0}/Policy/iter_{1:05d}.pth".format(args.trial, args.iter)
-    saved_variables = torch.load(policy_weight, map_location=device)
-    # print(saved_variables["data"])
-    saved_variables["data"].pop('features_extractor_class')
-    saved_variables["data"].pop('features_extractor_kwargs')
-    saved_variables["data"]['observation_space'] = spaces.Dict({
+    policy = "MultiInputLstmPolicy"
+
+    if env_cfg.LatentSpaceCfg.use_resnet_vae:
+        vae_config_path = '../mav_baselines/torch/controlNet/models/encoder.yaml'
+        features_extractor_params = {"ddconfig": OmegaConf.load(vae_config_path)['ddconfig']}
+
+    pre_control_policy = {}
+    for key in state_vae["state_dict"].keys():
+        policy_key = 'features_extractor.' + key
+        pre_control_policy[policy_key] = state_vae["state_dict"][key]
+        
+    observation_space = spaces.Dict({
             'image': spaces.Box(
                 low=0,
                 high=255,
@@ -69,71 +70,26 @@ def main():
                 dtype='uint8'
             ),
             'state': spaces.Box(
-                np.ones([1, config.LatentSpaceCfg.state_dims]) * -np.inf,
-                np.ones([1, config.LatentSpaceCfg.state_dims]) * np.inf,
+                np.ones([1, env_cfg.LatentSpaceCfg.state_dims]) * -np.inf,
+                np.ones([1, env_cfg.LatentSpaceCfg.state_dims]) * np.inf,
                 dtype=np.float64,
             ),  
         })
-    features_extractor_params = None
-    if config.LatentSpaceCfg.use_resnet_vae:
-        vae_config_path = '../mav_baselines/torch/controlNet/models/encoder.yaml'
-        features_extractor_params = {"ddconfig": OmegaConf.load(vae_config_path)['ddconfig']}
-    policy = MultiInputLstmPolicy(features_extractor_kwargs = features_extractor_params,
-                                features_dim=config.LatentSpaceCfg.vae_dims,
-                                reconstruction_members=recon,
-                                reconstruction_steps=10,
-                                states_dim=14,
-                                **saved_variables["data"])
-    policy.action_net = torch.nn.Sequential(policy.action_net, torch.nn.Tanh())
-    policy.load_state_dict(saved_variables["state_dict"], strict=True)
-    policy.to(device)
-    # for name, parameters in policy.named_parameters():
-    #     print(name,':',parameters.size())
-    pre_control_policy = {
-        'action_net.0.weight': saved_variables["state_dict"]['action_net.0.weight'],
-        'action_net.0.bias': saved_variables["state_dict"]['action_net.0.bias'],
-        'value_net.weight': saved_variables["state_dict"]['value_net.weight'],
-        'value_net.bias': saved_variables["state_dict"]['value_net.bias'],
-        'mlp_extractor.value_net.0.weight': saved_variables["state_dict"]['mlp_extractor.value_net.0.weight'],
-        'mlp_extractor.value_net.0.bias': saved_variables["state_dict"]['mlp_extractor.value_net.0.bias'],
-        'mlp_extractor.policy_net.0.weight': saved_variables["state_dict"]['mlp_extractor.policy_net.0.weight'],
-        'mlp_extractor.policy_net.0.bias': saved_variables["state_dict"]['mlp_extractor.policy_net.0.bias'],
-        'mlp_extractor.policy_net.2.weight': saved_variables["state_dict"]['mlp_extractor.policy_net.2.weight'],
-        'mlp_extractor.policy_net.2.bias': saved_variables["state_dict"]['mlp_extractor.policy_net.2.bias'],
-        'mlp_extractor.value_net.2.weight': saved_variables["state_dict"]['mlp_extractor.value_net.2.weight'],
-        'mlp_extractor.value_net.2.bias': saved_variables["state_dict"]['mlp_extractor.value_net.2.bias'],
-
-        # 'features_extractor.encoder.0.weight': state_vae['state_dict']['encoder.0.weight'],
-        # 'features_extractor.encoder.0.bias': state_vae['state_dict']['encoder.0.bias'],
-        # 'features_extractor.encoder.2.weight': state_vae['state_dict']['encoder.2.weight'],
-        # 'features_extractor.encoder.2.bias': state_vae['state_dict']['encoder.2.bias'],
-        # 'features_extractor.encoder.4.weight': state_vae['state_dict']['encoder.4.weight'],
-        # 'features_extractor.encoder.4.bias': state_vae['state_dict']['encoder.4.bias'],
-        # 'features_extractor.encoder.6.weight': state_vae['state_dict']['encoder.6.weight'],
-        # 'features_extractor.encoder.6.bias': state_vae['state_dict']['encoder.6.bias'],
-        # 'features_extractor.encoder.8.weight': state_vae['state_dict']['encoder.8.weight'],
-        # 'features_extractor.encoder.8.bias': state_vae['state_dict']['encoder.8.bias'],
-        # 'features_extractor.encoder.10.weight': state_vae['state_dict']['encoder.10.weight'],
-        # 'features_extractor.encoder.10.bias': state_vae['state_dict']['encoder.10.bias'],
-        # 'features_extractor.encoder.12.weight': state_vae['state_dict']['encoder.12.weight'],
-        # 'features_extractor.encoder.12.bias': state_vae['state_dict']['encoder.12.bias'],
-        # 'features_extractor.mu_linear.weight': state_vae['state_dict']['mu_linear.weight'],
-        # 'features_extractor.mu_linear.bias': state_vae['state_dict']['mu_linear.bias'],
-        # 'features_extractor.logvar_linear.weight': state_vae['state_dict']['logvar_linear.weight'],
-        # 'features_extractor.logvar_linear.bias': state_vae['state_dict']['logvar_linear.bias'],
-    }
-    for key in policy.state_dict().keys():
-        # if the key is start with 'features_extractor', then replace it with 'state_vae'
-        if key.startswith('features_extractor'):
-            old_key = key.replace('features_extractor.', '')
-            pre_control_policy[key] = state_vae["state_dict"][old_key]
-        
+    action_space = spaces.Box(
+            low = np.ones(4) * -1.,
+            high = np.ones(4) * 1.,
+            dtype=np.float64,
+        )
+    
     model = RecurrentPPO(
         tensorboard_log=log_dir,
         policy=policy,
         policy_kwargs=dict(
-        activation_fn=torch.nn.ReLU,
-        net_arch=[dict(pi=[256, 256], vf=[512, 512])],
+            features_extractor_kwargs = features_extractor_params,
+            activation_fn=torch.nn.ReLU,
+            net_arch=dict(pi=[256, 256], vf=[512, 512]),
+            log_std_init=-0.0,
+            use_beta = False,
         ),
         use_tanh_act=True,
         gae_lambda=0.95,
@@ -151,14 +107,16 @@ def main():
         retrain=args.retrain,
         verbose=1,
         only_lstm_training=True,
-        features_dim=config.LatentSpaceCfg.vae_dims,
+        features_dim=env_cfg.LatentSpaceCfg.vae_dims,
         states_dim=14,
         reconstruction_members=recon,
         reconstruction_steps=10,
         train_lstm_without_env=True,
-        lstm_dataset_path=args.dir,
+        lstm_dataset_path=args.dataset,
         lstm_weight_saved_path=args.lstm_exp,
         control_policy=pre_control_policy,
+        observation_space=observation_space,
+        action_space=action_space,
     )
     if args.train:
         model.train_lstm_from_dataset(use_log_depth=False)

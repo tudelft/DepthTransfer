@@ -1,6 +1,8 @@
 import os
 from isaacgym import gymutil
 from aerial_gym.envs.mavrl import mavrl_vec_env_v2
+from aerial_gym.envs.base.zoo_task_config import ZooTaskCfg
+from aerial_gym.envs.base.mavrl_task_config import MAVRLTaskCfg
 from aerial_gym.utils import get_args, task_registry
 from aerial_gym.mav_baselines.torch.recurrent_ppo.policies import MultiInputLstmPolicy
 from aerial_gym.mav_baselines.torch.recurrent_ppo.ppo_recurrent import RecurrentPPO
@@ -28,8 +30,12 @@ def main():
         {"name": "--logdir", "type": str, "default": "./exp_dir", "help": "Directory where results are logged"},
     ]
     args = get_args(add_args)
-    env, env_cfg = task_registry.make_env(name=args.task, args=args)
-    print("Number of environments", env_cfg.env.num_envs)
+    if args.task == "mavrl_zoo":
+        env_cfg = ZooTaskCfg()
+    elif args.task == "mavrl_task":
+        env_cfg = MAVRLTaskCfg()
+    env_cfg.robot_asset.collision_mask = 1
+    env, env_cfg = task_registry.make_env(name=args.task, args=args, env_cfg=env_cfg)
     train_env = mavrl_vec_env_v2.MavrlEnvVecV2(env)
 
     rsg_root = os.path.dirname(os.path.abspath(__file__))
@@ -44,33 +50,23 @@ def main():
 
     pre_control_policy = None
     if not args.nocontrol:
-        policy_weight = "./../saved/RecurrentPPO_{0}/Policy/iter_{1:05d}.pth".format(args.trial, args.iter)
+        policy_weight = "./../saved/PPO_{0}/Policy/iter_{1:05d}.pth".format(args.trial, args.iter)
         saved_variables = torch.load(policy_weight, map_location=device)
-        env_rms = "./../saved/RecurrentPPO_{0}/RMS/iter_{1:05d}.pth".format(args.trial, args.iter)
-        train_env.load_rms(env_rms, env_cfg.env.num_envs)
 
-        encoder_weight = "./../saved/RecurrentPPO_{0}/Encoder/iter_{1:05d}.pth".format(args.trial, args.iter)
+        encoder_weight = "./../saved/PPO_{0}/Encoder/encoder_iter_{1:05d}.pth".format(args.trial, args.iter)
         encoder_variables = torch.load(encoder_weight, map_location=device)
-        # print(saved_variables["state_dict"].keys())
-        pre_control_policy = {
-            'action_net.0.weight': saved_variables["state_dict"]['action_net.0.weight'],
-            'action_net.0.bias': saved_variables["state_dict"]['action_net.0.bias'],
-            'value_net.weight': saved_variables["state_dict"]['value_net.weight'],
-            'value_net.bias': saved_variables["state_dict"]['value_net.bias'],
-            'mlp_extractor.value_net.0.weight': saved_variables["state_dict"]['mlp_extractor.value_net.0.weight'],
-            'mlp_extractor.value_net.0.bias': saved_variables["state_dict"]['mlp_extractor.value_net.0.bias'],
-            'mlp_extractor.policy_net.0.weight': saved_variables["state_dict"]['mlp_extractor.policy_net.0.weight'],
-            'mlp_extractor.policy_net.0.bias': saved_variables["state_dict"]['mlp_extractor.policy_net.0.bias'],
-            'mlp_extractor.policy_net.2.weight': saved_variables["state_dict"]['mlp_extractor.policy_net.2.weight'],
-            'mlp_extractor.policy_net.2.bias': saved_variables["state_dict"]['mlp_extractor.policy_net.2.bias'],
-            'mlp_extractor.value_net.2.weight': saved_variables["state_dict"]['mlp_extractor.value_net.2.weight'],
-            'mlp_extractor.value_net.2.bias': saved_variables["state_dict"]['mlp_extractor.value_net.2.bias'],
-            'log_std': saved_variables["state_dict"]['log_std'],
-            'lstm_actor.weight_ih_l0': saved_variables["state_dict"]['lstm_actor.weight_ih_l0'],
-            'lstm_actor.weight_hh_l0': saved_variables["state_dict"]['lstm_actor.weight_hh_l0'],
-            'lstm_actor.bias_ih_l0': saved_variables["state_dict"]['lstm_actor.bias_ih_l0'],
-            'lstm_actor.bias_hh_l0': saved_variables["state_dict"]['lstm_actor.bias_hh_l0'],
-        }
+
+        lstm_weight = "./../saved/PPO_{0}/Encoder/lstm_iter_{1:05d}.pth".format(args.trial, args.iter)
+        lstm_variables = torch.load(lstm_weight, map_location=device)
+
+        # mu_linear_weight = "./../saved/PPO_{0}/Encoder/mu_linear_iter_{1:05d}.pth".format(args.trial, args.iter)
+        # mu_linear_variables = torch.load(mu_linear_weight, map_location=device)
+
+        pre_control_policy = {}
+        for key in saved_variables["state_dict"].keys():
+            pre_control_policy[key] = saved_variables["state_dict"][key]
+        for key in lstm_variables.keys():
+            pre_control_policy['lstm_actor.' + key] = lstm_variables[key]
         for key in encoder_variables.keys():
             pre_control_policy['features_extractor.' + key] = encoder_variables[key]
 
