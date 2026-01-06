@@ -39,3 +39,12 @@ cp ../setup.py .
 pip install .
 ```
 # 3. Training
+```bash
+python train_rnn_ppo.py --task="mavrl_task"  --num_envs 128 --num_maps 32 --headless True
+```
+```bash
+python collect_data.py --task="mavrl_task"  --num_envs 8 --num_maps 8 --trial 1 --iter 60
+```
+```bash
+python train_vae_resnet.py --dataset ../saved/dataset_outdoor_gt/
+```
